@@ -94,11 +94,11 @@ public class DepositAssistanceHandler extends TelegramLongPollingBot {
         } else if(message.getText().startsWith(Commands.startCommand)){
             sendMessage(sendMessageDefault(message, language));
             return;
-        }else if (message.getText().startsWith(Commands.STOPCOMMAND)){
-            sendHideKeyboard(message.getFrom().getId(), message.getChatId(), message.getMessageId());
-            return;
         }else if (message.getText().startsWith(Commands.SITE)){
             sendMessage(onShowSiteChoosen(message,language));
+            return;
+        } else if (message.getText().startsWith(Commands.STOPCOMMAND)){
+            sendHideKeyboard(message.getFrom().getId(), message.getChatId(), message.getMessageId(), language);
             return;
         }
 
@@ -153,13 +153,13 @@ public class DepositAssistanceHandler extends TelegramLongPollingBot {
     }
 
 
-    private void sendHideKeyboard(Integer userId, Long chatId, Integer messageId) throws TelegramApiException {
+    private void sendHideKeyboard(Integer userId, Long chatId, Integer messageId, String language) throws TelegramApiException {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId.toString());
         sendMessage.enableMarkdown(true);
         sendMessage.setReplyToMessageId(messageId);
-
-        ReplyKeyboardRemove replyKeyboardHide = new ReplyKeyboardRemove();
+        sendMessage.setText(getStoppedMessage(language));
+        ReplyKeyboardRemove  replyKeyboardHide = new ReplyKeyboardRemove();
         replyKeyboardHide.setSelective(true);
         sendMessage.setReplyMarkup(replyKeyboardHide);
 
@@ -169,7 +169,7 @@ public class DepositAssistanceHandler extends TelegramLongPollingBot {
 
     private static boolean isCommandForOther(String text) {
         boolean isSimpleCommand = text.equals("/start") || text.equals("/site") || text.equals("/stop");
-        boolean isCommandForMe = text.equals("/start@creditassistantbot") || text.equals("/site@creditassistantbot") || text.equals("/stop@creditassistantbot");
+        boolean isCommandForMe = text.equals("/start@depositassistantbot") || text.equals("/site@depositassistantbot") || text.equals("/stop@depositassistantbot");
         return text.startsWith("/") && !isSimpleCommand && !isCommandForMe;
     }
 
@@ -667,6 +667,11 @@ public class DepositAssistanceHandler extends TelegramLongPollingBot {
     // endregion Main menu options selected
 
     // region Get Messages
+
+    private static String getStoppedMessage(String language){
+        String baseString = LocalisationService.getInstance().getString("onStop", language);
+        return baseString;
+    }
 
     private static String getBackMessage(String language){
         String baseString = LocalisationService.getInstance().getString("back", language);

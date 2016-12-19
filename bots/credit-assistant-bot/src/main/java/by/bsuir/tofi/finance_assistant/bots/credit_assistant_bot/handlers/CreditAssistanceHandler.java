@@ -89,18 +89,18 @@ public class CreditAssistanceHandler extends TelegramLongPollingBot {
         }
         final int state = DB.getUserState(message.getChatId(),message.getFrom().getId()).getState();
         final String language = DB.getUserState(message.getChatId(),message.getFrom().getId()).getLanguage();
-            if (isCommandForOther(message.getText())) {
-                return;
-            } else if(message.getText().startsWith(Commands.startCommand)){
-                sendMessage(sendMessageDefault(message, language));
-                return;
-            }else if (message.getText().startsWith(Commands.STOPCOMMAND)){
-                sendHideKeyboard(message.getFrom().getId(), message.getChatId(), message.getMessageId());
-                return;
-            }else if (message.getText().startsWith(Commands.SITE)){
-                sendMessage(onShowSiteChoosen(message,language));
-                return;
-            }
+        if (isCommandForOther(message.getText())) {
+            return;
+        } else if(message.getText().startsWith(Commands.startCommand)){
+            sendMessage(sendMessageDefault(message, language));
+            return;
+        }else if (message.getText().startsWith(Commands.SITE)){
+            sendMessage(onShowSiteChoosen(message,language));
+            return;
+        } else if (message.getText().startsWith(Commands.STOPCOMMAND)){
+            sendHideKeyboard(message.getFrom().getId(), message.getChatId(), message.getMessageId(), language);
+            return;
+        }
 
         SendMessage sendMessageRequest;
         switch(state) {
@@ -157,12 +157,12 @@ public class CreditAssistanceHandler extends TelegramLongPollingBot {
     }
 
 
-    private void sendHideKeyboard(Integer userId, Long chatId, Integer messageId) throws TelegramApiException {
+    private void sendHideKeyboard(Integer userId, Long chatId, Integer messageId, String language) throws TelegramApiException {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId.toString());
         sendMessage.enableMarkdown(true);
         sendMessage.setReplyToMessageId(messageId);
-
+        sendMessage.setText(getStoppedMessage(language));
         ReplyKeyboardRemove  replyKeyboardHide = new ReplyKeyboardRemove();
         replyKeyboardHide.setSelective(true);
         sendMessage.setReplyMarkup(replyKeyboardHide);
@@ -815,6 +815,11 @@ public class CreditAssistanceHandler extends TelegramLongPollingBot {
     // endregion Main menu options selected
 
     // region Get Messages
+
+    private static String getStoppedMessage(String language){
+        String baseString = LocalisationService.getInstance().getString("onStop", language);
+        return baseString;
+    }
 
     private static String getBackMessage(String language){
         String baseString = LocalisationService.getInstance().getString("back", language);
