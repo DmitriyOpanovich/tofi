@@ -16,6 +16,7 @@ import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboar
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
+import org.telegram.telegrambots.exceptions.TelegramApiRequestException;
 import org.telegram.telegrambots.logging.BotLogger;
 
 import java.util.ArrayList;
@@ -40,6 +41,10 @@ public class FinanceAssistanceHandler extends TelegramLongPollingBot {
         super();
     }
 
+    @Override
+    public void clearWebhook() throws TelegramApiRequestException {
+        super.clearWebhook();
+    }
 
     @Override
     public String getBotToken() {

@@ -84,7 +84,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>by.bsuir.tofi.finance_assistant.bots.finance_assistant_bot.</mainClass>
+                            <mainClass>by.bsuir.tofi.finance_assistant.bots.finance_assistant_bot.FinanceAssistantBot</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

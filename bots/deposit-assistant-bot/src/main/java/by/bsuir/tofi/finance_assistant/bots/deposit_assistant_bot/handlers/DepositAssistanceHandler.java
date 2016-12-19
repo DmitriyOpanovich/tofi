@@ -20,6 +20,7 @@ import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboar
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
+import org.telegram.telegrambots.exceptions.TelegramApiRequestException;
 import org.telegram.telegrambots.logging.BotLogger;
 
 import java.util.ArrayList;
@@ -62,6 +63,10 @@ public class DepositAssistanceHandler extends TelegramLongPollingBot {
         return BotConfig.BOT_TOKEN;
     }
 
+    @Override
+    public void clearWebhook() throws TelegramApiRequestException {
+        super.clearWebhook();
+    }
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -89,6 +94,7 @@ public class DepositAssistanceHandler extends TelegramLongPollingBot {
         }
         final int state = DB.getUserState(message.getChatId(),message.getFrom().getId()).getState();
         final String language = DB.getUserState(message.getChatId(),message.getFrom().getId()).getLanguage();
+
         if (isCommandForOther(message.getText())) {
             return;
         } else if(message.getText().startsWith(Commands.startCommand)){
