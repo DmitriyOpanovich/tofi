@@ -311,7 +311,9 @@ public class DepositAssistanceHandler extends TelegramLongPollingBot {
         try {
             SendMessage sendMessage = new SendMessage();
             sendMessage.enableMarkdown(true);
-            if(StorageManager.getPossibleClientTypes().isOption(message.getText())) {
+            EnumsCollection clientTypes = StorageManager.getPossibleClientTypes();
+
+            if(clientTypes.isOption(message.getText())) {
 
                 EnumsCollection currencies = StorageManager.getPossibleCurrencies();
                 ReplyKeyboardMarkup replyKeyboardMarkup = getRecentsKeyboard(message.getFrom().getId(), language, currencies.getOptions());
@@ -319,12 +321,11 @@ public class DepositAssistanceHandler extends TelegramLongPollingBot {
                 sendMessage.setReplyToMessageId(message.getMessageId());
                 sendMessage.setChatId(message.getChatId());
                 sendMessage.setText(getCurrenciesMessage(currencies.getOptions(), language));
-                DB.getUserState(message.getChatId(), message.getFrom().getId()).getDepositFilter().setClientType(message.getText());
+                DB.getUserState(message.getChatId(), message.getFrom().getId()).getDepositFilter().setClientType(clientTypes.getOption(message.getText()));
                 DB.getUserState(message.getChatId(), message.getFrom().getId()).setState(FINDDEPOSITFORCURRENCY);
 
             }else {
 
-                EnumsCollection clientTypes = StorageManager.getPossibleClientTypes();
                 ReplyKeyboardMarkup replyKeyboardMarkup = getRecentsKeyboard(message.getFrom().getId(), language, clientTypes.getOptions());
                 sendMessage.setReplyMarkup(replyKeyboardMarkup);
                 sendMessage.setReplyToMessageId(message.getMessageId());
@@ -347,18 +348,19 @@ public class DepositAssistanceHandler extends TelegramLongPollingBot {
     private static SendMessage onFindingDepositForCurrencyReceived(Message message, String language){
         try {
             SendMessage sendMessage = new SendMessage();
-            if(StorageManager.getPossibleCurrencies().isOption(message.getText())) {
+            EnumsCollection currencies = StorageManager.getPossibleCurrencies();
+
+            if(currencies.isOption(message.getText())) {
                 ForceReplyKeyboard forceReplyKeyboard = getForceReply();
                 sendMessage.enableMarkdown(true);
                 sendMessage.setChatId(message.getChatId());
                 sendMessage.setReplyToMessageId(message.getMessageId());
                 sendMessage.setReplyMarkup(forceReplyKeyboard);
                 sendMessage.setText(getPercentageMessage(language));
-                DB.getUserState(message.getChatId(), message.getFrom().getId()).getDepositFilter().setCurrency(message.getText());
+                DB.getUserState(message.getChatId(), message.getFrom().getId()).getDepositFilter().setCurrency(currencies.getOption(message.getText()));
                 DB.getUserState(message.getChatId(), message.getFrom().getId()).setState(FINDDEPOSITFORPERCENTAGE);
             }else {
                 sendMessage.enableMarkdown(true);
-                EnumsCollection currencies = StorageManager.getPossibleCurrencies();
                 ReplyKeyboardMarkup replyKeyboardMarkup = getRecentsKeyboard(message.getFrom().getId(), language, currencies.getOptions());
                 sendMessage.setReplyMarkup(replyKeyboardMarkup);
                 sendMessage.setReplyToMessageId(message.getMessageId());
@@ -439,18 +441,19 @@ public class DepositAssistanceHandler extends TelegramLongPollingBot {
     private static SendMessage onFindingDepositForPercentageTypeReceived(Message message, String language) {
         try {
             SendMessage sendMessage = new SendMessage();
-            if(StorageManager.getPossiblePercentageTerms().isOption(message.getText())) {
+            EnumsCollection percentageTypes = StorageManager.getPossiblePercentageTerms();
+
+            if(percentageTypes.isOption(message.getText())) {
                 ForceReplyKeyboard forceReplyKeyboard = getForceReply();
                 sendMessage.enableMarkdown(true);
                 sendMessage.setChatId(message.getChatId());
                 sendMessage.setReplyToMessageId(message.getMessageId());
                 sendMessage.setReplyMarkup(forceReplyKeyboard);
                 sendMessage.setText(getInitFeeMessage(language));
-                DB.getUserState(message.getChatId(), message.getFrom().getId()).getDepositFilter().setCurrency(message.getText());
+                DB.getUserState(message.getChatId(), message.getFrom().getId()).getDepositFilter().setCurrency(percentageTypes.getOption(message.getText()));
                 DB.getUserState(message.getChatId(), message.getFrom().getId()).setState(FINDDEPOSITFORINITFEE);
             }else {
                 sendMessage.enableMarkdown(true);
-                EnumsCollection percentageTypes = StorageManager.getPossiblePercentageTerms();
                 ReplyKeyboardMarkup replyKeyboardMarkup = getRecentsKeyboard(message.getFrom().getId(), language, percentageTypes.getOptions());
                 sendMessage.setReplyMarkup(replyKeyboardMarkup);
                 sendMessage.setReplyToMessageId(message.getMessageId());
@@ -1041,7 +1044,7 @@ public class DepositAssistanceHandler extends TelegramLongPollingBot {
         List<InlineKeyboardButton> row = new ArrayList<>();
         InlineKeyboardButton button = new InlineKeyboardButton();
         button.setText(getVisitSiteMessage(language));
-        button.setUrl("http://104.236.114.130:8080/");
+        button.setUrl("http://finance-assistant.club/");
         row.add(button);
         rows.add(row);
 

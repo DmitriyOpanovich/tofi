@@ -325,7 +325,8 @@ public class CreditAssistanceHandler extends TelegramLongPollingBot {
         try {
             SendMessage sendMessage = new SendMessage();
             sendMessage.enableMarkdown(true);
-            if(StorageManager.getPossibleClientTypes().isOption(message.getText())) {
+            EnumsCollection clientTypes = StorageManager.getPossibleClientTypes();
+            if(clientTypes.isOption(message.getText())) {
 
                 EnumsCollection creditGoals = StorageManager.getPossibleCreditGoals();
                 ReplyKeyboardMarkup replyKeyboardMarkup = getRecentsKeyboard(message.getFrom().getId(), language, creditGoals.getOptions());
@@ -333,12 +334,10 @@ public class CreditAssistanceHandler extends TelegramLongPollingBot {
                 sendMessage.setReplyToMessageId(message.getMessageId());
                 sendMessage.setChatId(message.getChatId());
                 sendMessage.setText(getCreditGoalsMessage(creditGoals.getOptions(), language));
-                DB.getUserState(message.getChatId(), message.getFrom().getId()).getCreditFilter().setClientType(message.getText());
+                DB.getUserState(message.getChatId(), message.getFrom().getId()).getCreditFilter().setClientType(clientTypes.getOption(message.getText()));
                 DB.getUserState(message.getChatId(), message.getFrom().getId()).setState(FINDCREDITFORCREDITGOAL);
 
             }else {
-
-                EnumsCollection clientTypes = StorageManager.getPossibleClientTypes();
                 ReplyKeyboardMarkup replyKeyboardMarkup = getRecentsKeyboard(message.getFrom().getId(), language, clientTypes.getOptions());
                 sendMessage.setReplyMarkup(replyKeyboardMarkup);
                 sendMessage.setReplyToMessageId(message.getMessageId());
@@ -362,17 +361,17 @@ public class CreditAssistanceHandler extends TelegramLongPollingBot {
         try {
             SendMessage sendMessage = new SendMessage();
             sendMessage.enableMarkdown(true);
-            if(StorageManager.getPossibleCreditGoals().isOption(message.getText())) {
+            EnumsCollection creditGoals = StorageManager.getPossibleCreditGoals();
+            if(creditGoals.isOption(message.getText())) {
                 EnumsCollection currencies = StorageManager.getPossibleCurrencies();
                 ReplyKeyboardMarkup replyKeyboardMarkup = getRecentsKeyboard(message.getFrom().getId(), language, currencies.getOptions());
                 sendMessage.setReplyMarkup(replyKeyboardMarkup);
                 sendMessage.setReplyToMessageId(message.getMessageId());
                 sendMessage.setChatId(message.getChatId());
                 sendMessage.setText(getCurrenciesMessage(currencies.getOptions(), language));
-                DB.getUserState(message.getChatId(), message.getFrom().getId()).getCreditFilter().setGoal(message.getText());
+                DB.getUserState(message.getChatId(), message.getFrom().getId()).getCreditFilter().setGoal(creditGoals.getOption(message.getText()));
                 DB.getUserState(message.getChatId(), message.getFrom().getId()).setState(FINDCREDITFORCURRENCY);
             }else {
-                EnumsCollection creditGoals = StorageManager.getPossibleCreditGoals();
                 ReplyKeyboardMarkup replyKeyboardMarkup = getRecentsKeyboard(message.getFrom().getId(), language, creditGoals.getOptions());
                 sendMessage.setReplyMarkup(replyKeyboardMarkup);
                 sendMessage.setReplyToMessageId(message.getMessageId());
@@ -393,18 +392,19 @@ public class CreditAssistanceHandler extends TelegramLongPollingBot {
     private static SendMessage onFindingCreditForCurrencyReceived(Message message, String language){
         try {
             SendMessage sendMessage = new SendMessage();
-            if(StorageManager.getPossibleCurrencies().isOption(message.getText())) {
+            EnumsCollection currencies = StorageManager.getPossibleCurrencies();
+
+            if(currencies.isOption(message.getText())) {
                 ForceReplyKeyboard forceReplyKeyboard = getForceReply();
                 sendMessage.enableMarkdown(true);
                 sendMessage.setChatId(message.getChatId());
                 sendMessage.setReplyToMessageId(message.getMessageId());
                 sendMessage.setReplyMarkup(forceReplyKeyboard);
                 sendMessage.setText(getAmountMessage(language));
-                DB.getUserState(message.getChatId(), message.getFrom().getId()).getCreditFilter().setCurrency(message.getText());
+                DB.getUserState(message.getChatId(), message.getFrom().getId()).getCreditFilter().setCurrency(currencies.getOption(message.getText()));
                 DB.getUserState(message.getChatId(), message.getFrom().getId()).setState(FINDCREDITFORSUMM);
             }else {
                 sendMessage.enableMarkdown(true);
-                EnumsCollection currencies = StorageManager.getPossibleCurrencies();
                 ReplyKeyboardMarkup replyKeyboardMarkup = getRecentsKeyboard(message.getFrom().getId(), language, currencies.getOptions());
                 sendMessage.setReplyMarkup(replyKeyboardMarkup);
                 sendMessage.setReplyToMessageId(message.getMessageId());
@@ -542,16 +542,17 @@ public class CreditAssistanceHandler extends TelegramLongPollingBot {
         try {
             SendMessage sendMessage = new SendMessage();
             sendMessage.enableMarkdown(true);
-            if (StorageManager.getPossiblePaymentPossibilities().isOption(message.getText())) {
+            EnumsCollection paymentPossibilities = StorageManager.getPossiblePaymentPossibilities();
+
+            if (paymentPossibilities.isOption(message.getText())) {
                 ReplyKeyboardMarkup replyKeyboardMarkup = getAlternativeKeyboard(language);
                 sendMessage.setChatId(message.getChatId());
                 sendMessage.setReplyToMessageId(message.getMessageId());
                 sendMessage.setReplyMarkup(replyKeyboardMarkup);
                 sendMessage.setText(getGracePeriodMessage(language));
-                DB.getUserState(message.getChatId(), message.getFrom().getId()).getCreditFilter().setPaymentPosibility(message.getText());
+                DB.getUserState(message.getChatId(), message.getFrom().getId()).getCreditFilter().setPaymentPosibility(paymentPossibilities.getOption(message.getText()));
                 DB.getUserState(message.getChatId(), message.getFrom().getId()).setState(FINDCREDITFORGRACEPERIOD);
             } else {
-                EnumsCollection paymentPossibilities = StorageManager.getPossiblePaymentPossibilities();
 
                 ReplyKeyboardMarkup replyKeyboardMarkup = getRecentsKeyboard(message.getFrom().getId(), language, paymentPossibilities.getOptions());
                 sendMessage.setReplyMarkup(replyKeyboardMarkup);
@@ -629,18 +630,19 @@ public class CreditAssistanceHandler extends TelegramLongPollingBot {
 
             SendMessage sendMessage = new SendMessage();
             sendMessage.enableMarkdown(true);
-            if(StorageManager.getPossibleRepaymentMethods().isOption(message.getText())) {
+            EnumsCollection repaymentMethods = StorageManager.getPossibleRepaymentMethods();
+
+            if(repaymentMethods.isOption(message.getText())) {
                 ReplyKeyboardMarkup replyKeyboardMarkup = getAlternativeKeyboard(language);
                 sendMessage.setChatId(message.getChatId());
                 sendMessage.setReplyToMessageId(message.getMessageId());
                 sendMessage.setReplyMarkup(replyKeyboardMarkup);
 
                 sendMessage.setText(getPledgeMessage(language));
-                DB.getUserState(message.getChatId(), message.getFrom().getId()).getCreditFilter().setRepaymentMethod(message.getText());
+                DB.getUserState(message.getChatId(), message.getFrom().getId()).getCreditFilter().setRepaymentMethod(repaymentMethods.getOption(message.getText()));
                 DB.getUserState(message.getChatId(), message.getFrom().getId()).setState(FINDCREDITFORPLEDGE);
             }else {
-                EnumsCollection repaymentMethod = StorageManager.getPossibleRepaymentMethods();
-                ReplyKeyboardMarkup replyKeyboardMarkup = getRecentsKeyboard(message.getFrom().getId(), language, repaymentMethod.getOptions());
+                ReplyKeyboardMarkup replyKeyboardMarkup = getRecentsKeyboard(message.getFrom().getId(), language, repaymentMethods.getOptions());
                 sendMessage.setReplyMarkup(replyKeyboardMarkup);
                 sendMessage.setReplyToMessageId(message.getMessageId());
                 sendMessage.setChatId(message.getChatId());
@@ -1199,7 +1201,7 @@ public class CreditAssistanceHandler extends TelegramLongPollingBot {
         List<InlineKeyboardButton> row = new ArrayList<>();
         InlineKeyboardButton button = new InlineKeyboardButton();
         button.setText(getVisitSiteMessage(language));
-        button.setUrl("http://104.236.114.130:8080/");
+        button.setUrl("http://finance-assistant.club/");
         row.add(button);
         rows.add(row);
 

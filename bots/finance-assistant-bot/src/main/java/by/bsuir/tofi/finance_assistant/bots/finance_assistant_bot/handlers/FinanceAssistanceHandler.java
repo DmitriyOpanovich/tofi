@@ -615,7 +615,7 @@ public class FinanceAssistanceHandler extends TelegramLongPollingBot {
         List<InlineKeyboardButton> row = new ArrayList<>();
         InlineKeyboardButton button = new InlineKeyboardButton();
         button.setText(getVisitSiteMessage(language));
-        button.setUrl("http://104.236.114.130:8080/");
+        button.setUrl("http://finance-assistant.club/");
         row.add(button);
         rows.add(row);
 

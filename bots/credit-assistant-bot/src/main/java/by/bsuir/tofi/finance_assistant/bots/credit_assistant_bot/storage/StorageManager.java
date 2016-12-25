@@ -1,6 +1,7 @@
 package by.bsuir.tofi.finance_assistant.bots.credit_assistant_bot.storage;
 
 import by.bsuir.tofi.finance_assistant.bots.credit_assistant_bot.model.*;
+import by.bsuir.tofi.finance_assistant.bots.credit_assistant_bot.model.dto.CreditDTO;
 import by.bsuir.tofi.finance_assistant.bots.credit_assistant_bot.model.enums.*;
 import by.bsuir.tofi.finance_assistant.bots.credit_assistant_bot.services.requests.rest.request.*;
 import by.bsuir.tofi.finance_assistant.bots.credit_assistant_bot.services.requests.rest.response.Response;
@@ -139,7 +140,8 @@ public class StorageManager {
         Response response = new ChooseCreditsWithFilterRequest(creditFilterRequest).sendRequestAndGetResponse();
         if(response.isStatus()){
             try {
-                Credit credit = gson.fromJson(response.getMessage(), Credit.class);
+                CreditDTO creditDTO = gson.fromJson(response.getMessage(), CreditDTO.class);
+                Credit credit = new Credit(creditDTO);
                 return credit;
             }catch (Exception e){
                 BotLogger.info(LOGTAG, "Sorry, something went wrong during api response parsing (Get credit)");

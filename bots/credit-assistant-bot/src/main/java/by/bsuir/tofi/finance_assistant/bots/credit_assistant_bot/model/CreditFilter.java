@@ -1,6 +1,8 @@
 package by.bsuir.tofi.finance_assistant.bots.credit_assistant_bot.model;
 
 
+import by.bsuir.tofi.finance_assistant.bots.credit_assistant_bot.model.enums.BaseEnumEntity;
+
 public class CreditFilter {
 
     private Integer amount;
@@ -11,11 +13,11 @@ public class CreditFilter {
     private Boolean certificates; //bool
     private Boolean gracePerioid; //bool
     private Boolean prePayments; //bool
-    private String paymentPosibility;
-    private String repaymentMethod;
-    private String clientType;
-    private String goal;
-    private String currency;
+    private BaseEnumEntity paymentPosibility;
+    private BaseEnumEntity repaymentMethod;
+    private BaseEnumEntity clientType;
+    private BaseEnumEntity goal;
+    private BaseEnumEntity currency;
 
     public Integer getAmount() {
         return amount;
@@ -147,69 +149,42 @@ public class CreditFilter {
     }
 
     public String getPaymentPosibility() {
-        return paymentPosibility;
+        return paymentPosibility.getName();
     }
 
-    public void setPaymentPosibility(String paymentPosibility) {
-        switch (paymentPosibility){
-            case "Не важно":{
-                this.paymentPosibility = null;
-                break;
-            }
-            default:{
-                this.paymentPosibility=paymentPosibility;
-                break;
-            }
-        }
+    public void setPaymentPosibility(BaseEnumEntity paymentPosibility) {
+        this.repaymentMethod = paymentPosibility;
     }
 
     public String getRepaymentMethod() {
-        return repaymentMethod;
+        return repaymentMethod.getName();
     }
 
-    public void setRepaymentMethod(String repaymentMethod) {
-        switch (repaymentMethod){
-            case "Не важно":{
-                this.repaymentMethod = null;
-                break;
-            }
-            default:{
-                this.repaymentMethod=repaymentMethod;
-                break;
-            }
-        }
+    public void setRepaymentMethod(BaseEnumEntity repaymentMethod) {
+        this.repaymentMethod = repaymentMethod;
     }
 
     public String getClientType() {
-        return clientType;
+        return clientType.getName();
     }
 
-    public void setClientType(String clientType) {
+    public void setClientType(BaseEnumEntity clientType) {
         this.clientType = clientType;
     }
 
     public String getGoal() {
-        return goal;
+        return goal.getName();
     }
 
-    public void setGoal(String goal) {
-        switch (goal){
-            case "Не важно":{
-                this.goal = null;
-                break;
-            }
-            default:{
-                this.goal=goal;
-                break;
-            }
-        }
+    public void setGoal(BaseEnumEntity goal) {
+        this.goal = goal;
     }
 
     public String getCurrency() {
-        return currency;
+        return currency.getName();
     }
 
-    public void setCurrency(String currency) {
+    public void setCurrency(BaseEnumEntity currency) {
         this.currency = currency;
     }
 }

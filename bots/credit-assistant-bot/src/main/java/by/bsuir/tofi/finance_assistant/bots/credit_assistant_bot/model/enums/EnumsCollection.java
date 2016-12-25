@@ -26,6 +26,15 @@ public class EnumsCollection {
         this.options.add(option);
     }
 
+    public BaseEnumEntity getOption(String option){
+        for (BaseEnumEntity entity: this.options){
+            if(entity.getName() == option){
+                return entity;
+            }
+        }
+        return null;
+    }
+
     public boolean isOption(String option){
         for (BaseEnumEntity entity: this.options){
             if(entity.getName() == option){

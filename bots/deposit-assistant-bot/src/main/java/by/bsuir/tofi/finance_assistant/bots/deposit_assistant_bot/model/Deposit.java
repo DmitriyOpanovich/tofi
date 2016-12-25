@@ -1,5 +1,9 @@
 package by.bsuir.tofi.finance_assistant.bots.deposit_assistant_bot.model;
 
+import by.bsuir.tofi.finance_assistant.bots.deposit_assistant_bot.model.dto.DepositDTO;
+import by.bsuir.tofi.finance_assistant.bots.deposit_assistant_bot.model.dto.PercentageTermDTO;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -8,16 +12,62 @@ import java.util.List;
  */
 public class Deposit {
 
-    private String name="";
+    private String name;
     private Boolean capitalization;
     private Boolean refilling;
     private Boolean beforeTermWithdrawal;
     private String clientType;
     private String bank;
     private List<String> terms;
-    private String percentageType="";
-    private String url="";
-    private Date updateDate = new Date();
+    private String percentageType;
+    private String url;
+    private Date updateDate;
+
+    public Deposit(DepositDTO depositDTO){
+        try{
+            this.name = depositDTO.getName();
+        }catch (Exception e){
+        }
+        try{
+            this.capitalization = depositDTO.getCapitalization();
+        }catch (Exception e){
+        }
+        try{
+            this.refilling = depositDTO.getRefilling();
+        }catch (Exception e){
+        }
+        try{
+            this.beforeTermWithdrawal = depositDTO.getBeforeTermWithdrawal();
+        }catch (Exception e){
+        }
+        try{
+            this.clientType = depositDTO.getClientType().getName();
+        }catch (Exception e){
+        }
+        try{
+            this.bank = depositDTO.getBankName();
+        }catch (Exception e){
+        }
+        try{
+            this.terms = new ArrayList<>();
+            for(PercentageTermDTO percentageTermDTO: depositDTO.getTerms()){
+                this.terms.add(percentageTermDTO.describe());
+            }
+        }catch (Exception e){
+        }
+        try{
+            this.percentageType = depositDTO.getPercentageType().getName();
+        }catch (Exception e){
+        }
+        try{
+            this.url = depositDTO.getUrl();
+        }catch (Exception e){
+        }
+        try{
+            this.updateDate = depositDTO.getUpdateDate();
+        }catch (Exception e){
+        }
+    }
 
 
     public String getName() {

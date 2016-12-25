@@ -1,5 +1,7 @@
 package by.bsuir.tofi.finance_assistant.bots.deposit_assistant_bot.model;
 
+import by.bsuir.tofi.finance_assistant.bots.deposit_assistant_bot.model.enums.BaseEnumEntity;
+
 /**
  * Created by 1 on 18.12.2016.
  */
@@ -10,11 +12,13 @@ public class DepositFilter {
     private Boolean capitalization;
     private Boolean refilling;
     private Boolean beforeTermWithdrawal;
-    private String clientType;
-    private String currency;
+    private BaseEnumEntity clientType;
+    private BaseEnumEntity currency;
 
-    private String percentageType;
+    private BaseEnumEntity percentageType;
     private Double minPercentage;
+
+
 
 
 
@@ -98,36 +102,27 @@ public class DepositFilter {
     }
 
     public String getClientType() {
-        return clientType;
+        return clientType.getName();
     }
 
-    public void setClientType(String clientType) {
+    public void setClientType(BaseEnumEntity clientType) {
         this.clientType = clientType;
     }
 
     public String getCurrency() {
-        return currency;
+        return currency.getName();
     }
 
-    public void setCurrency(String currency) {
+    public void setCurrency(BaseEnumEntity currency) {
         this.currency = currency;
     }
 
     public String getPercentageType() {
-        return percentageType;
+        return percentageType.getName();
     }
 
-    public void setPercentageType(String percentageType) {
-        switch (percentageType){
-            case "Не важно":{
-                this.percentageType = null;
-                break;
-            }
-            default:{
-                this.percentageType=percentageType;
-                break;
-            }
-        }
+    public void setPercentageType(BaseEnumEntity percentageType) {
+        this.percentageType = percentageType;
     }
 
     public Double getMinPercentage() {

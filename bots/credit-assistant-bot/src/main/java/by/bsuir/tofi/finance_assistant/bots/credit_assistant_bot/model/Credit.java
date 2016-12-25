@@ -1,12 +1,16 @@
 package by.bsuir.tofi.finance_assistant.bots.credit_assistant_bot.model;
 
+import by.bsuir.tofi.finance_assistant.bots.credit_assistant_bot.model.dto.CreditDTO;
+import by.bsuir.tofi.finance_assistant.bots.credit_assistant_bot.model.dto.PercentageTermDTO;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 
 public class Credit {
 
-    private String name="";
+    private String name;
     private Boolean needsGurantor;
     private Boolean gracePeriod;
     private Boolean needCertificates;
@@ -15,11 +19,73 @@ public class Credit {
     private String clientType;
     private String bank;
     private List<String> terms;
-    private String goal="";
-    private String paymentPosibility="";
-    private String repaymentMethod="";
-    private String url="";
-    private Date updateDate= new Date();
+    private String goal;
+    private String paymentPosibility;
+    private String repaymentMethod;
+    private String url;
+    private Date updateDate;
+
+    public Credit(CreditDTO creditDTO){
+        try {
+            this.name = creditDTO.getName();
+        }catch (Exception e){
+        }
+        try {
+            this.needsGurantor = creditDTO.getNeedsGurantor();
+        }catch (Exception e){
+        }
+        try {
+            this.gracePeriod = creditDTO.getGracePeriod();
+        }catch (Exception e){
+        }
+        try {
+            this.needCertificates = creditDTO.getNeedCertificates();
+        }catch (Exception e){
+        }
+        try {
+            this.pledge = creditDTO.getPledge();
+        }catch (Exception e){
+        }
+        try {
+            this.prePayments = creditDTO.getPrePayments();
+        }catch (Exception e){
+        }
+        try {
+            this.clientType = creditDTO.getClientType().getName();
+        }catch (Exception e){
+        }
+        try {
+            this.bank = creditDTO.getBankName();
+        }catch (Exception e){
+        }
+        try {
+            this.terms = new ArrayList<>();
+            for(PercentageTermDTO percentageTermDTO: creditDTO.getTerms()){
+                this.terms.add(percentageTermDTO.describe());
+            }
+        }catch (Exception e){
+        }
+        try {
+            this.goal = creditDTO.getGoal().getName();
+        }catch (Exception e){
+        }
+        try {
+            this.paymentPosibility = creditDTO.describePaymentPossibility();
+        }catch (Exception e){
+        }
+        try {
+            this.repaymentMethod = creditDTO.getRepaymentMethod().getName();
+        }catch (Exception e){
+        }
+        try {
+            this.url = creditDTO.getUrl();
+        }catch (Exception e){
+        }
+        try {
+            this.updateDate = creditDTO.getUpdateDate();
+        }catch (Exception e){
+        }
+    }
 
     public String getName() {
         return name;
