@@ -1201,7 +1201,7 @@ public class CreditAssistanceHandler extends TelegramLongPollingBot {
         List<InlineKeyboardButton> row = new ArrayList<>();
         InlineKeyboardButton button = new InlineKeyboardButton();
         button.setText(getVisitSiteMessage(language));
-        button.setUrl("http://finance-assistant.club/");
+        button.setUrl("http://finance-assistant.club/ ");
         row.add(button);
         rows.add(row);
 

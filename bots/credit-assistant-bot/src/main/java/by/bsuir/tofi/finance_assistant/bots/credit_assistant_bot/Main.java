@@ -5,7 +5,13 @@ import by.bsuir.tofi.finance_assistant.bots.credit_assistant_bot.model.dto.Credi
 import by.bsuir.tofi.finance_assistant.bots.credit_assistant_bot.model.dto.EnumDTO;
 import by.bsuir.tofi.finance_assistant.bots.credit_assistant_bot.model.dto.PercentageTermDTO;
 import by.bsuir.tofi.finance_assistant.bots.credit_assistant_bot.services.CreditAssistantService;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfWriter;
 
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,7 +21,7 @@ import java.util.List;
  */
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
         PercentageTermDTO percentageTermDTO = new PercentageTermDTO();
         percentageTermDTO.setMinAmmount(5000);
         percentageTermDTO.setMaxAmmount(10000);
@@ -55,7 +61,16 @@ public class Main {
 
         Credit credit = new Credit(creditDTO);
         System.out.println(CreditAssistantService.getInstance().showBestCredit(credit, "ru"));
+        Document document = new Document();
+        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("HelloWorld.pdf"));
 
+        document.open();
+        BaseFont times =
+                BaseFont.createFont("c:/windows/fonts/times.ttf","cp1251",BaseFont.EMBEDDED);
+        Paragraph par =new Paragraph(CreditAssistantService.getInstance().showBestCredit(credit, "ru"),new Font(times,14));
+        document.add(par);
+
+        document.close();
+        writer.close();
     }
-
 }

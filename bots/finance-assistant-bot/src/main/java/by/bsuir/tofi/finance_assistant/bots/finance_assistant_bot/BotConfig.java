@@ -4,6 +4,6 @@ public class BotConfig {
     public static final String BOT_USERNAME = "Finance Assistant";
     public static final String BOT_TOKEN = "224205245:AAEbgqFEVixxLjTQVt1MUPq4IllLPMAWe_s";
 
-    public static final String API_URL = "";
+    public static final String API_URL = "http://104.236.114.130:8080/api/v1";
 
 }

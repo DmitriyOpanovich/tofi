@@ -5,12 +5,12 @@ import org.springframework.http.HttpMethod;
 
 public enum Functions {
     UPDATE_USER("", HttpMethod.POST),
-    GET_CLIENT_TYPES("", HttpMethod.GET),
-    GET_CREDIT_GOALS("", HttpMethod.GET),
-    GET_CURRENCIES("", HttpMethod.GET),
-    GET_PAYMENT_POSSIBILITIES("", HttpMethod.GET),
-    GET_REPAYMENT_METHODS("", HttpMethod.GET),
-    CHOOSE_CREDITS_WITH_FILTER("", HttpMethod.POST),
+    GET_CLIENT_TYPES("/client_types", HttpMethod.GET),
+    GET_CREDIT_GOALS("/credit_goals", HttpMethod.GET),
+    GET_CURRENCIES("/currencies", HttpMethod.GET),
+    GET_PAYMENT_POSSIBILITIES("/payment_posibilities", HttpMethod.GET),
+    GET_REPAYMENT_METHODS("/repayment_methods", HttpMethod.GET),
+    CHOOSE_CREDITS_WITH_FILTER("/filter_credits", HttpMethod.POST),
     GENERATE_REPORT_FOR_FILTER("", HttpMethod.POST),
     CONNECT_BOT_WITH_SITE_USER("", HttpMethod.POST);
 
