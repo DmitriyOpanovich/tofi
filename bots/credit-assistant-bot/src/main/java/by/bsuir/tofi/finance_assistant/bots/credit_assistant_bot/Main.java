@@ -67,10 +67,60 @@ public class Main {
         document.open();
         BaseFont times =
                 BaseFont.createFont("c:/windows/fonts/times.ttf","cp1251",BaseFont.EMBEDDED);
-        Paragraph par =new Paragraph(CreditAssistantService.getInstance().showBestCredit(credit, "ru"),new Font(times,14));
+        Paragraph par =new Paragraph(mapCreditDTOForReport(creditDTO) ,new Font(times,14));
         document.add(par);
 
         document.close();
         writer.close();
+    }
+    private static String mapCreditDTOForReport(CreditDTO creditDTO){
+        StringBuilder stringBuilder = new StringBuilder();
+        try{
+            stringBuilder.append(creditDTO.getName()).append("\n");
+        }catch (Exception e){}
+        try{
+            stringBuilder.append("Банк - ").append(creditDTO.getBankName()).append("\n");
+        }catch (Exception e){}
+        try{
+            stringBuilder.append("Тип клиента - ").append(creditDTO.getClientType().getName()).append("\n");
+        }catch (Exception e){}
+        try{
+            stringBuilder.append("Цель - ").append(creditDTO.getGoal().getName()).append("\n");
+        }catch (Exception e){}
+        try{
+            stringBuilder.append("На следующих условиях: ");
+            for(PercentageTermDTO percentageTermDTO: creditDTO.getTerms()){
+                stringBuilder.append("\n\t").append(percentageTermDTO.describe());
+            }
+            stringBuilder.append("\n");
+        }catch (Exception e){}
+        try{
+            stringBuilder.append("Поручитель - ").append(creditDTO.getNeedsGurantor() == null ? "Нет информации" : creditDTO.getNeedsGurantor() == true ? "Нужен" : "Не нужен").append("\n");
+        }catch (Exception e){}
+        try{
+            stringBuilder.append("Льготный период - ").append(creditDTO.getGracePeriod() == null ? "Нет информации" : creditDTO.getGracePeriod() == true ? "Есть" : "Нет").append("\n");
+        }catch (Exception e){}
+        try{
+            stringBuilder.append("Дополнтельные документы - ").append(creditDTO.getNeedCertificates() == null ? "Нет информации" : creditDTO.getNeedCertificates() == false ? "Нужны" : "Не нужны").append("\n");
+        }catch (Exception e){}
+        try{
+            stringBuilder.append("Залог - ").append(creditDTO.getPledge() == null ? "Нет информации" : creditDTO.getPledge() == false ? "Нужен" : "Не нужен").append("\n");
+        }catch (Exception e){}
+        try{
+            stringBuilder.append("Досрочное погашение - ").append(creditDTO.getPrePayments() == null ? "Нет информации" : creditDTO.getPrePayments() == false ? "Возможно" : "Не возможно").append("\n");
+        }catch (Exception e){}
+        try{
+            stringBuilder.append("Способ погашения - ").append(creditDTO.describePaymentPossibility()).append("\n");
+        }catch (Exception e){}
+        try{
+            stringBuilder.append("Способ пересчета - ").append(creditDTO.getRepaymentMethod().getName()).append("\n");
+        }catch (Exception e){}
+        try{
+            stringBuilder.append("Вы можете ознакомиться с деталями кредита более детально тут - ").append(creditDTO.getUrl()).append("\n");
+        }catch (Exception e){}
+        try{
+            stringBuilder.append("Последний раз этот кредит обновлялся - ").append(creditDTO.getUpdateDate()).append("\n");
+        }catch (Exception e){}
+        return stringBuilder.toString();
     }
 }
