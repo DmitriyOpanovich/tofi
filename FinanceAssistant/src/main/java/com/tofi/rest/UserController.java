@@ -2,6 +2,7 @@ package com.tofi.rest;
 
 import com.tofi.dto.UserDTO;
 import com.tofi.model.BotUser;
+import com.tofi.rest.response.StatusMessage;
 import com.tofi.service.UserService;
 import com.tofi.validations.groups.LoginValidation;
 import com.tofi.validations.groups.SignupValidation;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Created by ulian_000 on 13.12.2016.
  */
 @RestController
-@RequestMapping(produces = "application/json")
+@RequestMapping(value = "/api/v1", produces = "application/json")
 public class UserController {
 
     @Autowired
@@ -49,8 +50,12 @@ public class UserController {
     }
 
     @RequestMapping(value="/login", method= RequestMethod.POST)
-    public void  login(@RequestBody @Validated(LoginValidation.class) UserDTO userDto){
+    public StatusMessage login(@RequestBody @Validated(LoginValidation.class) UserDTO userDto){
+        BotUser loggedInUser = userService.loginUser(modelMapper.map(userDto, BotUser.class));
 
+        return loggedInUser != null ?
+                new StatusMessage("User logged in", true, null) :
+                new StatusMessage("Invalid login or password", false, null);
 
     }
 

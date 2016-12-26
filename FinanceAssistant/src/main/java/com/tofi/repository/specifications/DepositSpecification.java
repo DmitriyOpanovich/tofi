@@ -5,6 +5,8 @@ import com.tofi.model.enums.*;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ulian_000 on 21.12.2016.
@@ -18,6 +20,11 @@ public class DepositSpecification {
                 Join<Deposit, PercentageType> percentageTypeJoin = root.join(Deposit_.percentageType);
                 Join<Deposit, PercentageTerm> percentageTermsJoin = root.join(Deposit_.terms);
                 Join<PercentageTerm, Currency> currencyJoin = percentageTermsJoin.join(PercentageTerm_.currency);
+
+                List<Order> orderList = new ArrayList();
+                orderList.add(criteriaBuilder.desc(percentageTermsJoin.get(PercentageTerm_.percentage)));
+                orderList.add(criteriaBuilder.desc(root.get(Deposit_.updateDate)));
+                criteriaQuery.orderBy(orderList);
 
                 return criteriaBuilder.and(
                         filter.getCapitalization() != null ?

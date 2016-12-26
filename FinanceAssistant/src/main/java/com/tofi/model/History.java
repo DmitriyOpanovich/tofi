@@ -10,10 +10,10 @@ import java.util.List;
 @Table(name="Histories")
 public class History extends BaseEntity{
 
-    @OneToMany(mappedBy = "history", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
+    @OneToMany(mappedBy = "history", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     private List<CreditResponse> creditResponses;
 
-    @OneToMany(mappedBy = "history", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
+    @OneToMany(mappedBy = "history", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     private List<DepositResponse> depositResponses;
 
 

@@ -90,12 +90,18 @@ public class CreditServiceImpl implements CreditService {
     }
 
     private void mergeFields(Credit target, Credit source, Map<String, Currency> existingCurrencies) {
+        log.info("clientType Id1: " + target.getClientType().getId());
+        log.info("clientType Name1: " + target.getClientType().getName());
+
         target.setClientType(
                 source.getClientType() == null ?
                         null :
                         clientTypeRepository
                                 .findOneByName(source.getClientType().getName())
                                 .orElse(source.getClientType()));
+
+        log.info("clientType Id2: " + target.getClientType().getId());
+        log.info("clientType Name2: " + target.getClientType().getName());
 
         target.setGoal(
                 source.getGoal() == null ?
@@ -149,6 +155,7 @@ public class CreditServiceImpl implements CreditService {
         if (persistentCredit.getId() == null) {
             if (persistentCredit.getClientType() != null && persistentCredit.getClientType().getId() == null) {
                 clientTypeRepository.save(persistentCredit.getClientType());
+                log.info("qqqq persistentCredit error " + persistentCredit.getClientType().getId());
             }
             if (persistentCredit.getGoal() != null && persistentCredit.getGoal().getId() == null) {
                 goalRepository.save(persistentCredit.getGoal());

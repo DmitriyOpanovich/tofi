@@ -14,11 +14,11 @@ public class CreditResponse extends BaseEntity{
     @Column
     private Timestamp date;
 
-    @ManyToOne( fetch=FetchType.LAZY, cascade = {CascadeType.REMOVE})
+    @ManyToOne( fetch=FetchType.LAZY, cascade = {CascadeType.ALL})
     @JoinColumn(name="filter_id" )
     private CreditFilter filter;
 
-    @ManyToMany
+    @ManyToMany(fetch=FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name="creditResponse_credit",
             joinColumns = @JoinColumn(name = "creditResponse_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "credit_id", referencedColumnName = "id"))
@@ -28,7 +28,7 @@ public class CreditResponse extends BaseEntity{
     @Column(name="pdf_view")
     private byte[] pdfView;
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="history_id")
     private History history;
 
