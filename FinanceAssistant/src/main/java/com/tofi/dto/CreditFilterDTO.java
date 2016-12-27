@@ -15,6 +15,7 @@ public class CreditFilterDTO {
 
     @NotNull(message = "error.empty.percentage")
     @Max(value = 100, message = "error.invalid.percent")
+    @Min(value = 0, message = "error.invalid.percent")
     private Double maxPercentage;
 
     @NotNull(message = "error.empty.term")
@@ -38,8 +39,6 @@ public class CreditFilterDTO {
     @NotNull(message = "error.empty.currency")
     private EnumDTO currency;
 
-    @NotNull(message = "error.empty.telegramId")
-    private Long telegramUserId;
 
     public CreditFilterDTO(){}
 
@@ -134,10 +133,4 @@ public class CreditFilterDTO {
         this.currency = currency;
     }
 
-    public Long getTelegramUserId() {
-        return telegramUserId;
-    }
-    public void setTelegramUserId(Long telegramUserId) {
-        this.telegramUserId = telegramUserId;
-    }
 }

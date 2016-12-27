@@ -1,8 +1,5 @@
 package com.tofi.config;
 
-import com.tofi.dto.converters.EnumEntityToDtoConverter;
-import com.tofi.dto.mapping.CreditEntity2DtoMapping;
-import com.tofi.model.enums.ClientType;
 import com.tofi.service.*;
 import com.tofi.service.impl.*;
 import org.modelmapper.ModelMapper;
@@ -84,14 +81,12 @@ public class FinanceAssistantApplication {
 	public UserService userService() {return new UserServiceImpl();}
 
 	@Bean
+	public FeedbackService feedbackService() {return new FeedbackServiceImpl();}
+
+	@Bean
 	public ModelMapper modelMapper() {
 		ModelMapper mapper = new ModelMapper();
-		mapper.addMappings(new CreditEntity2DtoMapping());
-		mapper.addConverter(new EnumEntityToDtoConverter<ClientType>());
-
 		return mapper;
-
-
 	}
 
 	@Bean

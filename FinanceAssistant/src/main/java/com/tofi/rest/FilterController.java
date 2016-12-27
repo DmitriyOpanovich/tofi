@@ -3,16 +3,13 @@ package com.tofi.rest;
 import com.tofi.dto.CreditDTO;
 import com.tofi.dto.DepositDTO;
 import com.tofi.dto.EnumDTO;
-import com.tofi.dto.converters.EnumEntityToDtoConverter;
 import com.tofi.model.BotUser;
 import com.tofi.model.CreditFilter;
 import com.tofi.model.DepositFilter;
-import com.tofi.model.enums.ClientType;
 import com.tofi.rest.request.CreditFilterRequest;
 import com.tofi.rest.request.DepositFilterRequest;
 import com.tofi.service.FilterService;
 import org.modelmapper.ModelMapper;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,11 +33,7 @@ public class FilterController {
     @RequestMapping(value = "/api/v1/client_types", method = RequestMethod.GET)
     public List<EnumDTO> getClientTypes(){
         return filterService.getAvailableClientTypes().stream()
-                .map(clientType -> {
-                        //Type listType = new TypeToken<List<String>>() {}.getType();
-                        modelMapper.addConverter(new EnumEntityToDtoConverter<ClientType>());
-                        return modelMapper.map(clientType, EnumDTO.class);
-                })
+                .map(clientType -> modelMapper.map(clientType, EnumDTO.class))
                 .collect(Collectors.toList());
     }
 

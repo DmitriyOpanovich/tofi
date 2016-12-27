@@ -17,7 +17,10 @@ public interface UserService  {
     BotUser registerUserFromTelegram(BotUser unregisteredUser);
     BotUser registerUser(BotUser unregisteredUser);
     BotUser loginUser(BotUser unloginedUser);
+    BotUser changePassword(String prevPass, String newPass, String username);
+    BotUser forgotPassword(String newPass, String username);
 
     void logCreditSearchHistory(CreditFilter filter, List<Credit> filteredCredits, BotUser user);
     void logDepositSearchHistory(DepositFilter filter, List<Deposit> filteredDeposits, BotUser user);
+    History getCreditSearchHistory(BotUser user);
 }

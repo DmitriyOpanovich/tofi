@@ -26,6 +26,8 @@ public class UserServiceImpl implements UserService {
     CreditResponseRepository creditResponseRepository;
     @Autowired
     DepositResponseRepository depositResponseRepository;
+//    @Autowired
+//    HistoryRepository historyRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -106,6 +108,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public BotUser changePassword(String prevPass, String newPass, String username) {
+        return null;
+    }
+
+    @Override
+    public BotUser forgotPassword(String newPass, String username) {
+        return null;
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public Boolean userHasAlreadyRegistered(String username, String email) {
         if (username == null || email == null)
@@ -144,5 +156,13 @@ public class UserServiceImpl implements UserService {
         depositResponse.setDeposits(filteredDeposits);
         depositResponse.setHistory(user.getHistory());
         depositResponseRepository.saveAndFlush(depositResponse);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public History getCreditSearchHistory(BotUser user) {
+        Optional<BotUser> registeredUser = userRepository.findByTelegramId(user.getTelegramId());
+
+        return registeredUser.isPresent() ? registeredUser.get().getHistory() : null;
     }
 }
