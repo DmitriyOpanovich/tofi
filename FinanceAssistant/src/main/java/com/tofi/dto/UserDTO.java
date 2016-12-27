@@ -4,6 +4,7 @@ package com.tofi.dto;
 import com.tofi.validations.ExistUsername;
 import com.tofi.validations.UniqueEmail;
 import com.tofi.validations.UniqueUsername;
+import com.tofi.validations.UserNotRegisteredYet;
 import com.tofi.validations.groups.LoginValidation;
 import com.tofi.validations.groups.SignupValidation;
 import com.tofi.validations.groups.TelegramSignupValidation;
@@ -14,6 +15,7 @@ import java.util.Date;
 /**
  * Created by ulian_000 on 14.12.2016.
  */
+@UserNotRegisteredYet(groups = {SignupValidation.class})
 public class UserDTO {
 
     private String firstName;

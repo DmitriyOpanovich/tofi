@@ -28,13 +28,20 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.hibernate</groupId>
+					<artifactId>hibernate-entitymanager</artifactId>
+				</exclusion>
+			</exclusions>
+			<version>1.4.3.RELEASE</version>
 		</dependency>
 
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<scope>runtime</scope>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>mysql</groupId>-->
+			<!--<artifactId>mysql-connector-java</artifactId>-->
+			<!--<scope>runtime</scope>-->
+		<!--</dependency>-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -78,6 +85,7 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>5.2.5.Final</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-validator -->
@@ -85,18 +93,39 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
 			<version>5.3.4.Final</version>
+			<scope>provided</scope>
 		</dependency>
+
+		<!--<dependency>-->
+			<!--<groupId>org.hibernate</groupId>-->
+			<!--<artifactId>hibernate-entitymanager</artifactId>-->
+			<!--<version>5.1.0.Final</version>-->
+		<!--</dependency>-->
+
 
 		<!-- https://mvnrepository.com/artifact/org.eclipse.persistence/javax.persistence -->
 		<dependency>
 			<groupId>org.eclipse.persistence</groupId>
 			<artifactId>javax.persistence</artifactId>
-			<version>2.0.0</version>
+			<version>2.1.0</version>
 		</dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>15.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.hibernate.javax.persistence/hibernate-jpa-2.1-api -->
+		<!--<dependency>-->
+			<!--<groupId>org.hibernate.javax.persistence</groupId>-->
+			<!--<artifactId>hibernate-jpa-2.1-api</artifactId>-->
+			<!--<version>1.0.0.Final-redhat-1</version>-->
+		<!--</dependency>-->
 
 
 
-    </dependencies>
+
+	</dependencies>
 
 	<build>
 		<plugins>
@@ -139,8 +168,8 @@
                     <compilerArgument>
                         -proc:none
                     </compilerArgument>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
             </plugin>
 		</plugins>
@@ -149,16 +178,6 @@
 
     <pluginRepositories>
 
-        <!-- THIS REPOSITORY IS NOT LONGER VALID
-        <pluginRepository>
-                <id>maven2-repository.dev.java.net</id>
-                <name>Java.net Repository for Maven</name>
-                <url>http://download.java.net/maven/2/</url>
-                <layout>default</layout>
-    </pluginRepository>
-    -->
-
-        <!-- IF YOU WANT STAY TUNED ON UPDATE REMOVE COMMENT -->
 
         <pluginRepository>
             <id>sonatype-repo</id>

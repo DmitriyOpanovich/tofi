@@ -43,21 +43,4 @@ public class CreditControlller {
 
         creditService.updateCredits(credits);
     }
-
-//
-//    @RequestMapping(produces = "application/json")
-//    @ExceptionHandler(ConstraintViolationException.class)
-//    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-//    public @ResponseBody Map<String, Object> handleConstraintViolationException(ConstraintViolationException ex) {
-//
-//        // return the errors to the client in the response body
-//    }
-
-//    @RequestMapping(value="credits/{id}", method= RequestMethod.PUT)
-//    public void  update(@PathVariable Long id, @RequestBody Credit creditDTO){
-//        Credit existingEntity = creditRepository.findOne(id);
-//        BeanUtils.copyProperties(creditDTO, existingEntity);
-//        creditRepository.saveAndFlush(existingEntity);
-//    }
-
 }

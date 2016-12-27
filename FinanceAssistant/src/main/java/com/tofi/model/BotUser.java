@@ -26,9 +26,8 @@ public class BotUser extends BaseEntity {
     @Column(name="register_date")
     private Date registerDate;
 
-    @ManyToOne(fetch= FetchType.LAZY, cascade = {CascadeType.REMOVE})
+    @ManyToOne(fetch= FetchType.LAZY, cascade = {CascadeType.ALL})
     @JoinColumn(name="history_id")
-
     private History history;
 
     public BotUser(){}

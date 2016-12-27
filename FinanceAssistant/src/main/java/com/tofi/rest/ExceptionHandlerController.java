@@ -1,6 +1,7 @@
 package com.tofi.rest;
 
 
+import com.tofi.rest.response.StatusMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -47,6 +48,10 @@ public class ExceptionHandlerController  {
         List<String> errors = ex.getBindingResult().getFieldErrors().stream()
                 .map(error -> error.getDefaultMessage().replaceAll("[{}]",""))
                 .collect(Collectors.toList());
+
+        if (ex.getBindingResult().getGlobalError() != null) {
+            errors.add(ex.getBindingResult().getGlobalError().getDefaultMessage());
+        }
 
         return new StatusMessage(null, false, errors);
     }

@@ -28,7 +28,6 @@ public class CreditSpecifications {
                 List<Order> orderList = new ArrayList();
                 orderList.add(criteriaBuilder.asc(percentageTermsJoin.get(PercentageTerm_.percentage)));
                 orderList.add(criteriaBuilder.desc(root.get(Credit_.updateDate)));
-
                 criteriaQuery.orderBy(orderList);
 
                 return criteriaBuilder.and(
