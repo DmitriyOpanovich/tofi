@@ -101,29 +101,65 @@ public class DepositFilter {
         }
     }
 
-    public String getClientType() {
-        return clientType.getName();
+    public void setCapitalization(Boolean capitalization) {
+        this.capitalization = capitalization;
+    }
+
+    public void setRefilling(Boolean refilling) {
+        this.refilling = refilling;
+    }
+
+    public void setBeforeTermWithdrawal(Boolean beforeTermWithdrawal) {
+        this.beforeTermWithdrawal = beforeTermWithdrawal;
+    }
+
+    public BaseEnumEntity getClientType() {
+        return clientType;
     }
 
     public void setClientType(BaseEnumEntity clientType) {
         this.clientType = clientType;
     }
 
-    public String getCurrency() {
-        return currency.getName();
+    public BaseEnumEntity getCurrency() {
+        return currency;
     }
 
     public void setCurrency(BaseEnumEntity currency) {
         this.currency = currency;
     }
 
-    public String getPercentageType() {
-        return percentageType.getName();
+    public BaseEnumEntity getPercentageType() {
+        return percentageType;
     }
 
     public void setPercentageType(BaseEnumEntity percentageType) {
         this.percentageType = percentageType;
     }
+
+    //    public String getClientType() {
+//        return clientType.getName();
+//    }
+//
+//    public void setClientType(BaseEnumEntity clientType) {
+//        this.clientType = clientType;
+//    }
+//
+//    public String getCurrency() {
+//        return currency.getName();
+//    }
+//
+//    public void setCurrency(BaseEnumEntity currency) {
+//        this.currency = currency;
+//    }
+//
+//    public String getPercentageType() {
+//        return percentageType.getName();
+//    }
+//
+//    public void setPercentageType(BaseEnumEntity percentageType) {
+//        this.percentageType = percentageType;
+//    }
 
     public Double getMinPercentage() {
         return minPercentage;

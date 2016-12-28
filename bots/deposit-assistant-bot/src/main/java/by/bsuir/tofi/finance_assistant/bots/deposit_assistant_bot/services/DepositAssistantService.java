@@ -64,6 +64,9 @@ public class DepositAssistantService {
     }
 
     public String showBestDeposit(Deposit deposit, String language) {
+        if(deposit == null){
+            return LocalisationService.getInstance().getString("depositNotFound", language);
+        }
         String template = LocalisationService.getInstance().getString("bestDeposit", language);
         StringBuilder stringBuilder = new StringBuilder();
         for (String s: deposit.getTerms()){

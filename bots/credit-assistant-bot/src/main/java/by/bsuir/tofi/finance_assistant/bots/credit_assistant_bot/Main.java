@@ -22,6 +22,9 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) throws Exception{
+
+
+
         PercentageTermDTO percentageTermDTO = new PercentageTermDTO();
         percentageTermDTO.setMinAmmount(5000);
         percentageTermDTO.setMaxAmmount(10000);

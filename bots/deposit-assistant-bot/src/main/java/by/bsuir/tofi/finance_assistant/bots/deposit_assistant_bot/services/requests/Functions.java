@@ -10,7 +10,7 @@ public enum Functions {
     GET_CURRENCIES("/currencies", HttpMethod.GET),
     CHOOSE_DEPOSIT_WITH_FILTER("/filter_deposits", HttpMethod.POST),
     GENERATE_REPORT_FOR_FILTER("", HttpMethod.POST),
-    CONNECT_BOT_WITH_SITE_USER("", HttpMethod.POST);
+    CONNECT_BOT_WITH_SITE_USER("/telegram/register", HttpMethod.POST);
 
 
     private final String path;

@@ -12,7 +12,7 @@ public enum Functions {
     GET_REPAYMENT_METHODS("/repayment_methods", HttpMethod.GET),
     CHOOSE_CREDITS_WITH_FILTER("/filter_credits", HttpMethod.POST),
     GENERATE_REPORT_FOR_FILTER("", HttpMethod.POST),
-    CONNECT_BOT_WITH_SITE_USER("", HttpMethod.POST);
+    CONNECT_BOT_WITH_SITE_USER("/telegram/register", HttpMethod.POST);
 
 
     private final String path;

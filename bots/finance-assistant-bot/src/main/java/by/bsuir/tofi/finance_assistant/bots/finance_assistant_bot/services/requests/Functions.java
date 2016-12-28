@@ -7,8 +7,8 @@ import org.springframework.http.HttpMethod;
  */
 public enum Functions {
     UPDATE_USER("", HttpMethod.POST),
-    LEAVE_FEEDBACK("", HttpMethod.POST),
-    CONNECT_BOT_WITH_SITE_USER("", HttpMethod.POST);
+    LEAVE_FEEDBACK("/feedback", HttpMethod.POST),
+    CONNECT_BOT_WITH_SITE_USER("/telegram/register", HttpMethod.POST);
 
 
     private final String path;

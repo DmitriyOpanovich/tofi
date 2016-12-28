@@ -436,6 +436,8 @@ public class CreditAssistanceHandler extends TelegramLongPollingBot {
         sendMessage.setReplyMarkup(forceReplyKeyboard);
         try {
             Integer integer = Integer.parseInt(message.getText());
+            if(integer < 0)
+                throw new NumberFormatException();
             sendMessage.setText(getPercentageMessage(language));
             DB.getUserState(message.getChatId(), message.getFrom().getId()).getCreditFilter().setAmount(integer);
             DB.getUserState(message.getChatId(), message.getFrom().getId()).setState(FINDCREDITFORPERCENTAGE);
@@ -465,6 +467,8 @@ public class CreditAssistanceHandler extends TelegramLongPollingBot {
         sendMessage.setReplyMarkup(forceReplyKeyboard);
         try {
             Double d = Double.parseDouble(message.getText());
+            if( d < 0 || d > 100)
+                throw new NumberFormatException();
             sendMessage.setText(getTermMessage(language));
             DB.getUserState(message.getChatId(), message.getFrom().getId()).getCreditFilter().setMaxPercentage(d);
             DB.getUserState(message.getChatId(), message.getFrom().getId()).setState(FINDCREDITFORTERM);
@@ -495,6 +499,8 @@ public class CreditAssistanceHandler extends TelegramLongPollingBot {
         sendMessage.setReplyMarkup(replyKeyboardMarkup);
         try {
             Integer integer = Integer.parseInt(message.getText());
+            if(integer < 0)
+                throw new NumberFormatException();
             sendMessage.setText(getGuarantorMessage(language));
             DB.getUserState(message.getChatId(), message.getFrom().getId()).getCreditFilter().setTermInMounth(integer);
             DB.getUserState(message.getChatId(), message.getFrom().getId()).setState(FINDCREDITFORGUARANTOR);
@@ -776,12 +782,11 @@ public class CreditAssistanceHandler extends TelegramLongPollingBot {
     private static SendMessage onLinkReceived(Message message, String language) {
         try {
             boolean status = StorageManager.connectWithSiteUser(message.getFrom().getId(), message.getText());
-            ForceReplyKeyboard forceReplyKeyboard = getForceReply();
             SendMessage sendMessage = new SendMessage();
             sendMessage.enableMarkdown(true);
             sendMessage.setChatId(message.getChatId());
             sendMessage.setReplyToMessageId(message.getMessageId());
-            sendMessage.setReplyMarkup(forceReplyKeyboard);
+            sendMessage.setReplyMarkup(getMainMenuKeyboard(language));
             if (status) {
                 sendMessage.setText(LocalisationService.getInstance().getString("onLinkSuccess", language));
             } else {
@@ -1201,7 +1206,7 @@ public class CreditAssistanceHandler extends TelegramLongPollingBot {
         List<InlineKeyboardButton> row = new ArrayList<>();
         InlineKeyboardButton button = new InlineKeyboardButton();
         button.setText(getVisitSiteMessage(language));
-        button.setUrl("http://finance-assistant.club/ ");
+        button.setUrl("http://finance-assistant.club");
         row.add(button);
         rows.add(row);
 

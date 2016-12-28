@@ -5,20 +5,21 @@ package by.bsuir.tofi.finance_assistant.bots.finance_assistant_bot.model;
  */
 public class FeedbackRequest {
 
-    private Integer userId;
+    private String userName;
     private String message;
+    private final String typeName = "feedback";
 
-    public FeedbackRequest(Integer userId, String message) {
-        this.userId = userId;
+    public FeedbackRequest(Integer telegramId, String message) {
+        this.userName = String.valueOf(telegramId);
         this.message = message;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public String getTelegramId() {
+        return userName;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void telegramId(Integer telegramId) {
+        this.userName = String.valueOf(telegramId);
     }
 
     public String getMessage() {
@@ -27,5 +28,9 @@ public class FeedbackRequest {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getTypeName() {
+        return typeName;
     }
 }

@@ -392,10 +392,13 @@ public class DepositAssistanceHandler extends TelegramLongPollingBot {
         sendMessage.setReplyMarkup(forceReplyKeyboard);
         try {
             Integer integer = Integer.parseInt(message.getText());
+            if(integer<0)
+                throw new NumberFormatException();
             sendMessage.setText(getTermMessage(language));
             DB.getUserState(message.getChatId(), message.getFrom().getId()).getDepositFilter().setInitFee(integer);
             DB.getUserState(message.getChatId(), message.getFrom().getId()).setState(FINDDEPOSITFORTERM);
             return sendMessage;
+
         }catch (Exception e){
             BotLogger.error(LOGTAG, e);
             sendMessage.setText(getFormatFailMessage(language));
@@ -413,21 +416,25 @@ public class DepositAssistanceHandler extends TelegramLongPollingBot {
     }
 
     private static SendMessage onFindingDepositForPercentageReceived(Message message, String language){
-        ForceReplyKeyboard forceReplyKeyboard = getForceReply();
         SendMessage sendMessage = new SendMessage();
         sendMessage.enableMarkdown(true);
         sendMessage.setChatId(message.getChatId());
         sendMessage.setReplyToMessageId(message.getMessageId());
-        sendMessage.setReplyMarkup(forceReplyKeyboard);
         try {
+
             EnumsCollection percentageTypes = StorageManager.getPossiblePercentageTerms();
             Double d = Double.parseDouble(message.getText());
+            if( d<0 || d>100 )
+                throw new NumberFormatException();
             sendMessage.setText(getPercentageTypeMessage(percentageTypes.getOptions(), language));
+            sendMessage.setReplyMarkup(getRecentsKeyboard(message.getFrom().getId(), language, percentageTypes.getOptions()));
             DB.getUserState(message.getChatId(), message.getFrom().getId()).getDepositFilter().setMinPercentage(d);
             DB.getUserState(message.getChatId(), message.getFrom().getId()).setState(FINDDEPOSITFORPERCENTAGETYPE);
             return sendMessage;
         }catch (Exception e){
+            ForceReplyKeyboard forceReplyKeyboard = getForceReply();
             BotLogger.error(LOGTAG, e);
+            sendMessage.setReplyMarkup(forceReplyKeyboard);
             sendMessage.setText(getFormatFailMessage(language));
             DB.getUserState(message.getChatId(), message.getFrom().getId()).setState(FINDDEPOSITFORPERCENTAGE);
             return sendMessage;
@@ -450,7 +457,7 @@ public class DepositAssistanceHandler extends TelegramLongPollingBot {
                 sendMessage.setReplyToMessageId(message.getMessageId());
                 sendMessage.setReplyMarkup(forceReplyKeyboard);
                 sendMessage.setText(getInitFeeMessage(language));
-                DB.getUserState(message.getChatId(), message.getFrom().getId()).getDepositFilter().setCurrency(percentageTypes.getOption(message.getText()));
+                DB.getUserState(message.getChatId(), message.getFrom().getId()).getDepositFilter().setPercentageType(percentageTypes.getOption(message.getText()));
                 DB.getUserState(message.getChatId(), message.getFrom().getId()).setState(FINDDEPOSITFORINITFEE);
             }else {
                 sendMessage.enableMarkdown(true);
@@ -485,6 +492,8 @@ public class DepositAssistanceHandler extends TelegramLongPollingBot {
         sendMessage.setReplyMarkup(replyKeyboardMarkup);
         try {
             Integer integer = Integer.parseInt(message.getText());
+            if(integer < 0)
+                throw new NumberFormatException();
             sendMessage.setText(getBeforeTermMessage(language));
             DB.getUserState(message.getChatId(), message.getFrom().getId()).getDepositFilter().setTermInMounth(integer);
             DB.getUserState(message.getChatId(), message.getFrom().getId()).setState(FINDDEPOSITFORBEFORETERM);
@@ -636,12 +645,11 @@ public class DepositAssistanceHandler extends TelegramLongPollingBot {
     private static SendMessage onLinkReceived(Message message, String language) {
         try {
             boolean status = StorageManager.connectWithSiteUser(message.getFrom().getId(), message.getText());
-            ForceReplyKeyboard forceReplyKeyboard = getForceReply();
             SendMessage sendMessage = new SendMessage();
             sendMessage.enableMarkdown(true);
             sendMessage.setChatId(message.getChatId());
             sendMessage.setReplyToMessageId(message.getMessageId());
-            sendMessage.setReplyMarkup(forceReplyKeyboard);
+            sendMessage.setReplyMarkup(getMainMenuKeyboard(language));
             if (status) {
                 sendMessage.setText(LocalisationService.getInstance().getString("onLinkSuccess", language));
             } else {

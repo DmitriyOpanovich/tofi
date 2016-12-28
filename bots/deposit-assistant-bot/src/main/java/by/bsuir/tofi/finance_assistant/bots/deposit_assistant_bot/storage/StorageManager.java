@@ -1,6 +1,7 @@
 package by.bsuir.tofi.finance_assistant.bots.deposit_assistant_bot.storage;
 
 import by.bsuir.tofi.finance_assistant.bots.deposit_assistant_bot.model.*;
+import by.bsuir.tofi.finance_assistant.bots.deposit_assistant_bot.model.dto.DepositDTO;
 import by.bsuir.tofi.finance_assistant.bots.deposit_assistant_bot.model.enums.*;
 import by.bsuir.tofi.finance_assistant.bots.deposit_assistant_bot.services.requests.rest.request.*;
 import by.bsuir.tofi.finance_assistant.bots.deposit_assistant_bot.services.requests.rest.response.Response;
@@ -94,11 +95,21 @@ public class StorageManager {
 
     public static Deposit chooseDepositForThisFilter(int userId, DepositFilter creditFilter){
         DepostiFilterRequest depostiFilterRequest = new DepostiFilterRequest(userId, creditFilter);
+        System.out.println(gson.toJson(depostiFilterRequest));
         Response response = new ChooseDepositWithFilterRequest(depostiFilterRequest).sendRequestAndGetResponse();
         if(response.isStatus()){
             try {
-                Deposit deposit = gson.fromJson(response.getMessage(), Deposit.class);
-                return deposit;
+                List<DepositDTO> depositDTOs = new ArrayList<DepositDTO>();
+                for(JsonElement jsonElement: jsonParser.parse(response.getMessage()).getAsJsonArray()){
+                    DepositDTO depositDTO = gson.fromJson(jsonElement, DepositDTO.class);
+                    depositDTOs.add(depositDTO);
+                }
+                if(depositDTOs.size()>0) {
+                    Deposit deposit = new Deposit(depositDTOs.get(0));
+                    return deposit;
+                }else {
+                    return null;
+                }
             }catch (Exception e){
                 BotLogger.info(LOGTAG, "Sorry, something went wrong during api response parsing (Get credit)");
                 return null;
@@ -111,6 +122,7 @@ public class StorageManager {
 
     public static PdfReport generateReportForThisFilter(int userId, DepositFilter creditFilter, String language){
         DepostiFilterRequest depostiFilterRequest = new DepostiFilterRequest(userId, creditFilter, language);
+        System.out.println(gson.toJson(depostiFilterRequest));
         Response response = new GenerateReportForFilterRequest(depostiFilterRequest).sendRequestAndGetResponse();
         if(response.isStatus()){
             try {
@@ -127,9 +139,15 @@ public class StorageManager {
     }
 
     public static boolean connectWithSiteUser(int userId, String siteUser){
-        ConnectionWithSiteUserRequest connectionWithSiteUserRequest = new ConnectionWithSiteUserRequest(userId, siteUser);
-        Response response = new ConnectBotWithSiteUserRequest(connectionWithSiteUserRequest).sendRequestAndGetResponse();
-        return response.isStatus();
+        try {
+            ConnectionWithSiteUserRequest connectionWithSiteUserRequest = new ConnectionWithSiteUserRequest(userId, siteUser);
+            System.out.println(gson.toJson(connectionWithSiteUserRequest));
+            Response response = new ConnectBotWithSiteUserRequest(connectionWithSiteUserRequest).sendRequestAndGetResponse();
+            return response.isStatus();
+        }catch (Exception e){
+            return false;
+        }
+
     }
 
 }

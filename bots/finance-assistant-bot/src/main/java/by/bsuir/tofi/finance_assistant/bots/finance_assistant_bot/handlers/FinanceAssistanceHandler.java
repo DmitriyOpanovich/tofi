@@ -286,7 +286,7 @@ public class FinanceAssistanceHandler extends TelegramLongPollingBot {
         sendMessage.setReplyToMessageId(message.getMessageId());
         sendMessage.setReplyMarkup(forceReplyKeyboard);
         sendMessage.setText(getFeedbackMessage(language));
-        DB.getUserState(message.getChatId(), message.getFrom().getId()).setState(LINKTOSITE);
+        DB.getUserState(message.getChatId(), message.getFrom().getId()).setState(LEAVEFEEDBACK);
         return sendMessage;
     }
 
@@ -299,18 +299,13 @@ public class FinanceAssistanceHandler extends TelegramLongPollingBot {
     }
 
     private static SendMessage onLinkReceived(Message message, String language) {
-        boolean status = false;
-        try {
-            status = StorageManager.connectWithSiteUser(message.getFrom().getId(), message.getText());
-        }catch (Exception e){
+        boolean status = StorageManager.connectWithSiteUser(message.getFrom().getId(), message.getText());
 
-        }
-        ForceReplyKeyboard forceReplyKeyboard = getForceReply();
         SendMessage sendMessage = new SendMessage();
         sendMessage.enableMarkdown(true);
         sendMessage.setChatId(message.getChatId());
         sendMessage.setReplyToMessageId(message.getMessageId());
-        sendMessage.setReplyMarkup(forceReplyKeyboard);
+        sendMessage.setReplyMarkup(getMainMenuKeyboard(language));
         if (status) {
             sendMessage.setText(LocalisationService.getInstance().getString("onLinkSuccess", language));
         } else {
@@ -331,18 +326,13 @@ public class FinanceAssistanceHandler extends TelegramLongPollingBot {
     }
 
     private static SendMessage onFeedbackReceived(Message message, String language) {
-        boolean status = false;
-        try {
-            status = StorageManager.leaveFeedback(message.getFrom().getId(), message.getText());
-        }catch (Exception e){
+        boolean status = StorageManager.leaveFeedback(message.getFrom().getId(), message.getText());
 
-        }
-        ForceReplyKeyboard forceReplyKeyboard = getForceReply();
         SendMessage sendMessage = new SendMessage();
         sendMessage.enableMarkdown(true);
         sendMessage.setChatId(message.getChatId());
         sendMessage.setReplyToMessageId(message.getMessageId());
-        sendMessage.setReplyMarkup(forceReplyKeyboard);
+        sendMessage.setReplyMarkup(getMainMenuKeyboard(language));
         if (status) {
             sendMessage.setText(LocalisationService.getInstance().getString("onFeedbackSuccess", language));
         } else {

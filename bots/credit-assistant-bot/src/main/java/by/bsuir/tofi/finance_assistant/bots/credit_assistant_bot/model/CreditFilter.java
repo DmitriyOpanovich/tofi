@@ -5,7 +5,7 @@ import by.bsuir.tofi.finance_assistant.bots.credit_assistant_bot.model.enums.Bas
 
 public class CreditFilter {
 
-    private Integer amount;
+    private Integer ammount;
     private Double maxPercentage;
     private Integer termInMounth;
     private Boolean needGurantor; //bool
@@ -20,11 +20,11 @@ public class CreditFilter {
     private BaseEnumEntity currency;
 
     public Integer getAmount() {
-        return amount;
+        return ammount;
     }
 
-    public void setAmount(Integer amount) {
-        this.amount = amount;
+    public void setAmount(Integer ammount) {
+        this.ammount = ammount;
     }
 
     public Double getMaxPercentage() {
@@ -45,6 +45,26 @@ public class CreditFilter {
 
     public Boolean getNeedGurantor() {
         return needGurantor;
+    }
+
+    public void setNeedGurantor(Boolean needGurantor) {
+        this.needGurantor = needGurantor;
+    }
+
+    public void setPledge(Boolean pledge) {
+        this.pledge = pledge;
+    }
+
+    public void setCertificates(Boolean certificates) {
+        this.certificates = certificates;
+    }
+
+    public void setGracePerioid(Boolean gracePerioid) {
+        this.gracePerioid = gracePerioid;
+    }
+
+    public void setPrePayments(Boolean prePayments) {
+        this.prePayments = prePayments;
     }
 
     public void setNeedGurantor(String needGurantor) {
@@ -148,43 +168,83 @@ public class CreditFilter {
         }
     }
 
-    public String getPaymentPosibility() {
-        return paymentPosibility.getName();
+    public BaseEnumEntity getPaymentPosibility() {
+        return paymentPosibility;
     }
 
     public void setPaymentPosibility(BaseEnumEntity paymentPosibility) {
-        this.repaymentMethod = paymentPosibility;
+        this.paymentPosibility = paymentPosibility;
     }
 
-    public String getRepaymentMethod() {
-        return repaymentMethod.getName();
+    public BaseEnumEntity getRepaymentMethod() {
+        return repaymentMethod;
     }
 
     public void setRepaymentMethod(BaseEnumEntity repaymentMethod) {
         this.repaymentMethod = repaymentMethod;
     }
 
-    public String getClientType() {
-        return clientType.getName();
+    public BaseEnumEntity getClientType() {
+        return clientType;
     }
 
     public void setClientType(BaseEnumEntity clientType) {
         this.clientType = clientType;
     }
 
-    public String getGoal() {
-        return goal.getName();
+    public BaseEnumEntity getGoal() {
+        return goal;
     }
 
     public void setGoal(BaseEnumEntity goal) {
         this.goal = goal;
     }
 
-    public String getCurrency() {
-        return currency.getName();
+    public BaseEnumEntity getCurrency() {
+        return currency;
     }
 
     public void setCurrency(BaseEnumEntity currency) {
         this.currency = currency;
     }
+
+    //    public String getPaymentPosibility() {
+//        return paymentPosibility.getName();
+//    }
+//
+//    public void setPaymentPosibility(BaseEnumEntity paymentPosibility) {
+//        this.paymentPosibility = paymentPosibility;
+//    }
+//
+//    public String getRepaymentMethod() {
+//        return repaymentMethod.getName();
+//    }
+//
+//    public void setRepaymentMethod(BaseEnumEntity repaymentMethod) {
+//        this.repaymentMethod = repaymentMethod;
+//    }
+//
+//    public String getClientType() {
+//        return clientType.getName();
+//    }
+//
+//    public void setClientType(BaseEnumEntity clientType) {
+//        this.clientType = clientType;
+//    }
+//
+//    public String getGoal() {
+//        return goal.getName();
+//    }
+//
+//    public void setGoal(BaseEnumEntity goal) {
+//        this.goal = goal;
+//    }
+//
+//    public String getCurrency() {
+//        return currency.getName();
+//    }
+//
+//    public void setCurrency(BaseEnumEntity currency) {
+//        this.currency = currency;
+//    }
 }

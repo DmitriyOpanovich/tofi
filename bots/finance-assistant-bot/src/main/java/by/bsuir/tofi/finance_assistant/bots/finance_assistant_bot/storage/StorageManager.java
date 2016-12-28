@@ -33,15 +33,27 @@ public class StorageManager {
     }
 
     public static boolean connectWithSiteUser(int userId, String siteUser){
-        ConnectionWithSiteUserRequest connectionWithSiteUserRequest = new ConnectionWithSiteUserRequest(userId, siteUser);
-        Response response = new ConnectBotWithSiteUserRequest(connectionWithSiteUserRequest).sendRequestAndGetResponse();
-        return response.isStatus();
+        try {
+            ConnectionWithSiteUserRequest connectionWithSiteUserRequest = new ConnectionWithSiteUserRequest(userId, siteUser);
+            System.out.println(gson.toJson(connectionWithSiteUserRequest));
+            Response response = new ConnectBotWithSiteUserRequest(connectionWithSiteUserRequest).sendRequestAndGetResponse();
+            return response.isStatus();
+        }catch (Exception e){
+            return false;
+        }
+
     }
 
     public static boolean leaveFeedback(int userId, String message){
-        FeedbackRequest feedbackRequest = new FeedbackRequest(userId, message);
-        Response response = new LeaveFeedbackRequest(feedbackRequest).sendRequestAndGetResponse();
-        return response.isStatus();
+        try {
+            FeedbackRequest feedbackRequest = new FeedbackRequest(userId, message);
+            System.out.println(gson.toJson(feedbackRequest));
+            Response response = new LeaveFeedbackRequest(feedbackRequest).sendRequestAndGetResponse();
+            return response.isStatus();
+        }catch (Exception e){
+            return false;
+        }
+
     }
 
 

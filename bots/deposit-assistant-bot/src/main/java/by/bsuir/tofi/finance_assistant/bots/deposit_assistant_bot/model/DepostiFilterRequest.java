@@ -4,35 +4,35 @@ package by.bsuir.tofi.finance_assistant.bots.deposit_assistant_bot.model;
  * Created by 1 on 18.12.2016.
  */
 public class DepostiFilterRequest {
-    private int userId;
-    private DepositFilter depositFilter;
+    private int telegramId;
+    private DepositFilter filter;
     private String language;
 
-    public DepostiFilterRequest(int userId, DepositFilter depositFilter, String language) {
-        this.userId = userId;
-        this.depositFilter = depositFilter;
+    public DepostiFilterRequest(int telegramId, DepositFilter filter, String language) {
+        this.telegramId = telegramId;
+        this.filter = filter;
         this.language = language;
     }
 
-    public DepostiFilterRequest(int userId, DepositFilter depositFilter) {
-        this.userId = userId;
-        this.depositFilter = depositFilter;
+    public DepostiFilterRequest(int telegramId, DepositFilter filter) {
+        this.telegramId = telegramId;
+        this.filter = filter;
     }
 
-    public int getUserId() {
-        return userId;
+    public int getTelegramId() {
+        return telegramId;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setTelegramId(int telegramId) {
+        this.telegramId = telegramId;
     }
 
-    public DepositFilter getDepositFilter() {
-        return depositFilter;
+    public DepositFilter getFilter() {
+        return filter;
     }
 
-    public void setDepositFilter(DepositFilter depositFilter) {
-        this.depositFilter = depositFilter;
+    public void setFilter(DepositFilter filter) {
+        this.filter = filter;
     }
 
     public String getLanguage() {

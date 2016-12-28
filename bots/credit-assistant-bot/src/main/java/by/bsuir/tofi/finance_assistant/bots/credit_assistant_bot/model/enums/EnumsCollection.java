@@ -28,7 +28,7 @@ public class EnumsCollection {
 
     public BaseEnumEntity getOption(String option){
         for (BaseEnumEntity entity: this.options){
-            if(entity.getName() == option){
+            if(entity.getName().equals(option) && !option.equals("Не важно")){
                 return entity;
             }
         }
@@ -37,7 +37,7 @@ public class EnumsCollection {
 
     public boolean isOption(String option){
         for (BaseEnumEntity entity: this.options){
-            if(entity.getName() == option){
+            if(entity.getName().equals(option)){
                 return true;
             }
         }

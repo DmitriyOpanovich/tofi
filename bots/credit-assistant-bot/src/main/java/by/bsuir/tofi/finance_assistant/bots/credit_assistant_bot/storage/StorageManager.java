@@ -61,7 +61,7 @@ public class StorageManager {
                     CreditGoal creditGoal = gson.fromJson(jsonElement, CreditGoal.class);
                     creditGoals.add(creditGoal);
                 }
-                creditGoals.add(new AnyOption());
+                //creditGoals.add(new AnyOption());
                 return new EnumsCollection(creditGoals);
             }catch (Exception e){
                 BotLogger.info(LOGTAG, "Sorry, something went wrong during api response parsing (Credit goals)");
@@ -140,9 +140,17 @@ public class StorageManager {
         Response response = new ChooseCreditsWithFilterRequest(creditFilterRequest).sendRequestAndGetResponse();
         if(response.isStatus()){
             try {
-                CreditDTO creditDTO = gson.fromJson(response.getMessage(), CreditDTO.class);
-                Credit credit = new Credit(creditDTO);
-                return credit;
+                List<CreditDTO> creditDTOs = new ArrayList<CreditDTO>();
+                for(JsonElement jsonElement: jsonParser.parse(response.getMessage()).getAsJsonArray()){
+                    CreditDTO creditDTO = gson.fromJson(jsonElement, CreditDTO.class);
+                    creditDTOs.add(creditDTO);
+                }
+                if(creditDTOs.size()>0) {
+                    Credit credit = new Credit(creditDTOs.get(0));
+                    return credit;
+                }else {
+                    return null;
+                }
             }catch (Exception e){
                 BotLogger.info(LOGTAG, "Sorry, something went wrong during api response parsing (Get credit)");
                 return null;
@@ -155,6 +163,7 @@ public class StorageManager {
 
     public static PdfReport generateReportForThisFilter(int userId, CreditFilter creditFilter, String language){
         CreditFilterRequest creditFilterRequest = new CreditFilterRequest(userId, creditFilter, language);
+        System.out.println(gson.toJson(creditFilterRequest));
         Response response = new GenerateReportForFilterRequest(creditFilterRequest).sendRequestAndGetResponse();
         if(response.isStatus()){
             try {
@@ -171,9 +180,14 @@ public class StorageManager {
     }
 
     public static boolean connectWithSiteUser(int userId, String siteUser){
-        ConnectionWithSiteUserRequest connectionWithSiteUserRequest = new ConnectionWithSiteUserRequest(userId, siteUser);
-        Response response = new ConnectBotWithSiteUserRequest(connectionWithSiteUserRequest).sendRequestAndGetResponse();
-        return response.isStatus();
+        try {
+            ConnectionWithSiteUserRequest connectionWithSiteUserRequest = new ConnectionWithSiteUserRequest(userId, siteUser);
+            System.out.println(gson.toJson(connectionWithSiteUserRequest));
+            Response response = new ConnectBotWithSiteUserRequest(connectionWithSiteUserRequest).sendRequestAndGetResponse();
+            return response.isStatus();
+        }catch (Exception e){
+            return false;
+        }
     }
 
 }

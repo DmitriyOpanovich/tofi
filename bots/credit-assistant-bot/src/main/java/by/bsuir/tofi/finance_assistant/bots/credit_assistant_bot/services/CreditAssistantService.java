@@ -81,6 +81,9 @@ public class CreditAssistantService {
     }
 
     public String showBestCredit(Credit credit, String language) {
+        if(credit == null){
+            return LocalisationService.getInstance().getString("creditNotFound", language);
+        }
         String template = LocalisationService.getInstance().getString("bestCredit", language);
         StringBuilder stringBuilder = new StringBuilder();
         for (String s: credit.getTerms()){
