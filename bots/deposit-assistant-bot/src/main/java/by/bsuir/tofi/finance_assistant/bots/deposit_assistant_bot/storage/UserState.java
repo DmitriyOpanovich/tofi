@@ -9,6 +9,7 @@ public class UserState {
     private DepositFilter depositFilter = new DepositFilter();
     private int state;
     private String language = "ru";
+    private String pdfView;
 
 
     public UserState(int userId, long chatId) {
@@ -53,6 +54,15 @@ public class UserState {
 
     public void setDepositFilter(DepositFilter depositFilter) {
         this.depositFilter = depositFilter;
+        this.pdfView = null;
+    }
+
+    public String getPdfView() {
+        return pdfView;
+    }
+
+    public void setPdfView(String pdfView) {
+        this.pdfView = pdfView;
     }
 
     public String getLanguage() {

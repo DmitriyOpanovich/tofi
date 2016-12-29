@@ -2,6 +2,7 @@ package by.bsuir.tofi.finance_assistant.bots.deposit_assistant_bot.storage;
 
 import by.bsuir.tofi.finance_assistant.bots.deposit_assistant_bot.model.*;
 import by.bsuir.tofi.finance_assistant.bots.deposit_assistant_bot.model.dto.DepositDTO;
+import by.bsuir.tofi.finance_assistant.bots.deposit_assistant_bot.model.dto.DepositHistoryDTO;
 import by.bsuir.tofi.finance_assistant.bots.deposit_assistant_bot.model.enums.*;
 import by.bsuir.tofi.finance_assistant.bots.deposit_assistant_bot.services.requests.rest.request.*;
 import by.bsuir.tofi.finance_assistant.bots.deposit_assistant_bot.services.requests.rest.response.Response;
@@ -100,10 +101,14 @@ public class StorageManager {
         if(response.isStatus()){
             try {
                 List<DepositDTO> depositDTOs = new ArrayList<DepositDTO>();
-                for(JsonElement jsonElement: jsonParser.parse(response.getMessage()).getAsJsonArray()){
-                    DepositDTO depositDTO = gson.fromJson(jsonElement, DepositDTO.class);
-                    depositDTOs.add(depositDTO);
-                }
+                DepositHistoryDTO depositHistoryDTO = gson.fromJson(jsonParser.parse(response.getMessage()), DepositHistoryDTO.class);
+                depositDTOs = depositHistoryDTO.getDeposits();
+                DB.getUserState(userId).setPdfView(depositHistoryDTO.getPdfView());
+
+//                for(JsonElement jsonElement: jsonParser.parse(response.getMessage()).getAsJsonArray()){
+//                    DepositDTO depositDTO = gson.fromJson(jsonElement, DepositDTO.class);
+//                    depositDTOs.add(depositDTO);
+//                }
                 if(depositDTOs.size()>0) {
                     Deposit deposit = new Deposit(depositDTOs.get(0));
                     return deposit;
@@ -120,23 +125,23 @@ public class StorageManager {
         }
     }
 
-    public static PdfReport generateReportForThisFilter(int userId, DepositFilter creditFilter, String language){
-        DepostiFilterRequest depostiFilterRequest = new DepostiFilterRequest(userId, creditFilter, language);
-        System.out.println(gson.toJson(depostiFilterRequest));
-        Response response = new GenerateReportForFilterRequest(depostiFilterRequest).sendRequestAndGetResponse();
-        if(response.isStatus()){
-            try {
-                PdfReport pdfReport = gson.fromJson(response.getMessage(), PdfReport.class);
-                return pdfReport;
-            }catch (Exception e){
-                BotLogger.info(LOGTAG, "Sorry, something went wrong during api response parsing (Get report)");
-                return null;
-            }
-        }else {
-            BotLogger.info(LOGTAG, "Sorry, something went wrong during api call (Get report)");
-            return null;
-        }
-    }
+//    public static PdfReport generateReportForThisFilter(int userId, DepositFilter creditFilter, String language){
+//        DepostiFilterRequest depostiFilterRequest = new DepostiFilterRequest(userId, creditFilter, language);
+//        System.out.println(gson.toJson(depostiFilterRequest));
+//        Response response = new GenerateReportForFilterRequest(depostiFilterRequest).sendRequestAndGetResponse();
+//        if(response.isStatus()){
+//            try {
+//                PdfReport pdfReport = gson.fromJson(response.getMessage(), PdfReport.class);
+//                return pdfReport;
+//            }catch (Exception e){
+//                BotLogger.info(LOGTAG, "Sorry, something went wrong during api response parsing (Get report)");
+//                return null;
+//            }
+//        }else {
+//            BotLogger.info(LOGTAG, "Sorry, something went wrong during api call (Get report)");
+//            return null;
+//        }
+//    }
 
     public static boolean connectWithSiteUser(int userId, String siteUser){
         try {

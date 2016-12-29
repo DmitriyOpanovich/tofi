@@ -7,6 +7,7 @@ public class UserState {
     private int userId;
     private long chatId;
     private CreditFilter creditFilter = new CreditFilter();
+    private String pdfView;
     private int state;
     private String language = "ru";
 
@@ -52,7 +53,16 @@ public class UserState {
     }
 
     public void setCreditFilter(CreditFilter creditFilter) {
+        this.pdfView = null;
         this.creditFilter = creditFilter;
+    }
+
+    public String getPdfView() {
+        return pdfView;
+    }
+
+    public void setPdfView(String pdfView) {
+        this.pdfView = pdfView;
     }
 
     public String getLanguage() {

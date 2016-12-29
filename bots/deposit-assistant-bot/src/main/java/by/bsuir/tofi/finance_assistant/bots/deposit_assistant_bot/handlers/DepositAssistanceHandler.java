@@ -124,23 +124,6 @@ public class DepositAssistanceHandler extends TelegramLongPollingBot {
             case FINDDEPOSITFORCAPIT:
                 sendMessageRequest = messageOnCreditFinding(message, language, state);
                 break;
-            case GENERATEREPORT:
-                sendMessageRequest = messageOnGenerateReport(message, language);
-                try {
-                    sendDocument = DepositAssistantService.getInstance().sendReport(StorageManager.generateReportForThisFilter(message.getFrom().getId(), DB.getUserState(message.getFrom().getId()).getDepositFilter(), language).getPdfView());
-                    if (sendDocument != null) {
-                        sendDocument.setChatId(message.getChatId());
-                        try {
-                            sendDocument(sendDocument);
-                        } catch (TelegramApiException e) {
-                            BotLogger.error(LOGTAG, e);
-                        }
-                    }
-                }catch (Exception e){
-
-                }
-
-                break;
             case SETTINGS:
                 sendMessageRequest = messageOnSetting(message, language);
                 break;
@@ -564,12 +547,11 @@ public class DepositAssistanceHandler extends TelegramLongPollingBot {
         try {
             SendMessage sendMessage = new SendMessage();
             sendMessage.enableMarkdown(true);
-            ReplyKeyboardMarkup replyKeyboardMarkup = getLastKeyboard(language);
-            sendMessage.setReplyMarkup(replyKeyboardMarkup);
+            sendMessage.setReplyMarkup(getReportKeyboard(message.getFrom().getId(), language));
             sendMessage.setReplyToMessageId(message.getMessageId());
             sendMessage.setChatId(message.getChatId());
             DB.getUserState(message.getChatId(), message.getFrom().getId()).getDepositFilter().setCapitalization(message.getText());
-            DB.getUserState(message.getChatId(), message.getFrom().getId()).setState(GENERATEREPORT);
+            DB.getUserState(message.getChatId(), message.getFrom().getId()).setState(MAINMENU);
             Deposit deposit = StorageManager.chooseDepositForThisFilter(message.getFrom().getId(), DB.getUserState(message.getChatId(), message.getFrom().getId()).getDepositFilter());
             sendMessage.setText(DepositAssistantService.getInstance().showBestDeposit(deposit, language));
             return sendMessage;
@@ -1059,5 +1041,18 @@ public class DepositAssistanceHandler extends TelegramLongPollingBot {
         inlineKeyboardMarkup.setKeyboard(rows);
         return inlineKeyboardMarkup;
     }
+    private static InlineKeyboardMarkup getReportKeyboard(int userId, String language){
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
 
+        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
+        List<InlineKeyboardButton> row = new ArrayList<>();
+        InlineKeyboardButton button = new InlineKeyboardButton();
+        button.setText(getReportCommand(language));
+        button.setUrl(BotConfig.GETPDF_URL+DB.getUserState(userId).getPdfView());
+        row.add(button);
+        rows.add(row);
+
+        inlineKeyboardMarkup.setKeyboard(rows);
+        return inlineKeyboardMarkup;
+    }
 }

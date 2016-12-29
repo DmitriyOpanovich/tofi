@@ -2,6 +2,7 @@ package by.bsuir.tofi.finance_assistant.bots.credit_assistant_bot.storage;
 
 import by.bsuir.tofi.finance_assistant.bots.credit_assistant_bot.model.*;
 import by.bsuir.tofi.finance_assistant.bots.credit_assistant_bot.model.dto.CreditDTO;
+import by.bsuir.tofi.finance_assistant.bots.credit_assistant_bot.model.dto.CreditHistoryDTO;
 import by.bsuir.tofi.finance_assistant.bots.credit_assistant_bot.model.enums.*;
 import by.bsuir.tofi.finance_assistant.bots.credit_assistant_bot.services.requests.rest.request.*;
 import by.bsuir.tofi.finance_assistant.bots.credit_assistant_bot.services.requests.rest.response.Response;
@@ -141,10 +142,13 @@ public class StorageManager {
         if(response.isStatus()){
             try {
                 List<CreditDTO> creditDTOs = new ArrayList<CreditDTO>();
-                for(JsonElement jsonElement: jsonParser.parse(response.getMessage()).getAsJsonArray()){
-                    CreditDTO creditDTO = gson.fromJson(jsonElement, CreditDTO.class);
-                    creditDTOs.add(creditDTO);
-                }
+                CreditHistoryDTO creditHistoryDTO = gson.fromJson(jsonParser.parse(response.getMessage()), CreditHistoryDTO.class);
+                DB.getUserState(userId).setPdfView(creditHistoryDTO.getPdfView());
+//                for(JsonElement jsonElement: jsonParser.parse(response.getMessage()).getAsJsonArray()){
+//                    CreditDTO creditDTO = gson.fromJson(jsonElement, CreditDTO.class);
+//                    creditDTOs.add(creditDTO);
+//                }
+                creditDTOs = creditHistoryDTO.getCredits();
                 if(creditDTOs.size()>0) {
                     Credit credit = new Credit(creditDTOs.get(0));
                     return credit;
@@ -161,23 +165,23 @@ public class StorageManager {
         }
     }
 
-    public static PdfReport generateReportForThisFilter(int userId, CreditFilter creditFilter, String language){
-        CreditFilterRequest creditFilterRequest = new CreditFilterRequest(userId, creditFilter, language);
-        System.out.println(gson.toJson(creditFilterRequest));
-        Response response = new GenerateReportForFilterRequest(creditFilterRequest).sendRequestAndGetResponse();
-        if(response.isStatus()){
-            try {
-                PdfReport pdfReport = gson.fromJson(response.getMessage(), PdfReport.class);
-                return pdfReport;
-            }catch (Exception e){
-                BotLogger.info(LOGTAG, "Sorry, something went wrong during api response parsing (Get report)");
-                return null;
-            }
-        }else {
-            BotLogger.info(LOGTAG, "Sorry, something went wrong during api call (Get report)");
-            return null;
-        }
-    }
+//    public static PdfReport generateReportForThisFilter(int userId, CreditFilter creditFilter, String language){
+//        CreditFilterRequest creditFilterRequest = new CreditFilterRequest(userId, creditFilter, language);
+//        System.out.println(gson.toJson(creditFilterRequest));
+//        Response response = new GenerateReportForFilterRequest(creditFilterRequest).sendRequestAndGetResponse();
+//        if(response.isStatus()){
+//            try {
+//                PdfReport pdfReport = gson.fromJson(response.getMessage(), PdfReport.class);
+//                return pdfReport;
+//            }catch (Exception e){
+//                BotLogger.info(LOGTAG, "Sorry, something went wrong during api response parsing (Get report)");
+//                return null;
+//            }
+//        }else {
+//            BotLogger.info(LOGTAG, "Sorry, something went wrong during api call (Get report)");
+//            return null;
+//        }
+//    }
 
     public static boolean connectWithSiteUser(int userId, String siteUser){
         try {

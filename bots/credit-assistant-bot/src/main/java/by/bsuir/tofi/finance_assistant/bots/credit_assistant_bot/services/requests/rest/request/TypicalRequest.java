@@ -3,6 +3,7 @@ package by.bsuir.tofi.finance_assistant.bots.credit_assistant_bot.services.reque
 import by.bsuir.tofi.finance_assistant.bots.credit_assistant_bot.BotConfig;
 import by.bsuir.tofi.finance_assistant.bots.credit_assistant_bot.services.requests.Functions;
 import by.bsuir.tofi.finance_assistant.bots.credit_assistant_bot.services.requests.rest.response.Response;
+import com.google.gson.Gson;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -32,7 +33,10 @@ public abstract class TypicalRequest {
         if(this.httpMethod.equals(HttpMethod.GET)){
             responseEntity = restTemplate.getForEntity(this.uri, String.class);
         }else{
-            HttpEntity<Object> requestEntity = new HttpEntity<Object>(this.requestEntity, new HttpHeaders());
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Content-Type", "application/json;charset=UTF-8");
+            Gson gson = new Gson();
+            HttpEntity<String> requestEntity = new HttpEntity<String>(gson.toJson(this.requestEntity), headers);
             responseEntity = restTemplate.exchange(this.uri, this.httpMethod, requestEntity, String.class);
         }
 

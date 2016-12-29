@@ -60,20 +60,34 @@ public class PercentageTermDTO {
     public String describe() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Предлагаемая сумма: ");
-        if(minAmmount!=null){
-            stringBuilder.append("от ").append(minAmmount + " ").append(currency.getName() + " ");
-        }
-        if(maxAmmount!=null){
-            stringBuilder.append("до ").append(maxAmmount + " ").append(currency.getName() + " ");
-        }
+        try {
+            if (minAmmount != null) {
+                stringBuilder.append("от ").append(minAmmount + " ").append(currency.getName() + " ");
+            }
+        }catch (Exception e){}
+        try {
+            if (maxAmmount != null) {
+                stringBuilder.append("до ").append(maxAmmount + " ").append(currency.getName() + " ");
+            }
+        }catch (Exception e){}
         stringBuilder.append("; На срок ");
-        if(minTermMonth!=null){
-            stringBuilder.append("от ").append(minTermMonth + " месяцев ");
-        }
-        if(maxTermMonth!=null){
-            stringBuilder.append("до ").append(maxTermMonth + " месяцев ");
-        }
-        stringBuilder.append("; Под ").append(getPercentage()).append(" процентов.");
+        try {
+            if (minTermMonth != null) {
+                stringBuilder.append("от ").append(minTermMonth + " месяцев ");
+            }
+        }catch (Exception e){}
+        try {
+            if(maxTermMonth!=null){
+                stringBuilder.append("до ").append(maxTermMonth + " месяцев ");
+            }
+        }catch (Exception e){}
+        try {
+            if(getPercentage()!=null) {
+                stringBuilder.append("; Под ").append(getPercentage()).append(" процентов.");
+            }else {
+                stringBuilder.append("; Процентная ставка определяется по согласованию.");
+            }
+        }catch (Exception e){}
         return stringBuilder.toString();
     }
 

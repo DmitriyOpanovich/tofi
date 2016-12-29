@@ -122,23 +122,6 @@ public class CreditAssistanceHandler extends TelegramLongPollingBot {
             case FINDCREDITFORCERTIFICATES:
                 sendMessageRequest = messageOnCreditFinding(message, language, state);
                 break;
-            case GENERATEREPORT:
-                sendMessageRequest = messageOnGenerateReport(message, language);
-                try {
-                    sendDocument = CreditAssistantService.getInstance().sendReport(StorageManager.generateReportForThisFilter(message.getFrom().getId(), DB.getUserState(message.getFrom().getId()).getCreditFilter(), language).getPdfView());
-                    if (sendDocument != null) {
-                        sendDocument.setChatId(message.getChatId());
-                        try {
-                            sendDocument(sendDocument);
-                        } catch (TelegramApiException e) {
-                            BotLogger.error(LOGTAG, e);
-                        }
-                    }
-                }catch (Exception e){
-
-                }
-
-                break;
             case SETTINGS:
                 sendMessageRequest = messageOnSetting(message, language);
                 break;
@@ -697,12 +680,11 @@ public class CreditAssistanceHandler extends TelegramLongPollingBot {
         try {
             SendMessage sendMessage = new SendMessage();
             sendMessage.enableMarkdown(true);
-            ReplyKeyboardMarkup replyKeyboardMarkup = getLastKeyboard(language);
-            sendMessage.setReplyMarkup(replyKeyboardMarkup);
+            sendMessage.setReplyMarkup(getReportKeyboard(message.getFrom().getId(), language));
             sendMessage.setReplyToMessageId(message.getMessageId());
             sendMessage.setChatId(message.getChatId());
             DB.getUserState(message.getChatId(), message.getFrom().getId()).getCreditFilter().setCertificates(message.getText());
-            DB.getUserState(message.getChatId(), message.getFrom().getId()).setState(GENERATEREPORT);
+            DB.getUserState(message.getChatId(), message.getFrom().getId()).setState(MAINMENU);
             Credit credit = StorageManager.chooseCreditForThisFilter(message.getFrom().getId(), DB.getUserState(message.getFrom().getId()).getCreditFilter());
             sendMessage.setText(CreditAssistantService.getInstance().showBestCredit(credit, language));
             return sendMessage;
@@ -1183,6 +1165,14 @@ public class CreditAssistanceHandler extends TelegramLongPollingBot {
         answer.setReplyMarkup(getSiteKeyboard(language));
         return answer;
     }
+    private static SendMessage onGetReportChoosen(Message message, String language){
+        SendMessage answer = new SendMessage();
+        answer.enableMarkdown(true);
+        answer.setChatId(message.getChatId());
+        answer.setReplyToMessageId(message.getMessageId());
+        answer.setReplyMarkup(getSiteKeyboard(language));
+        return answer;
+    }
 
     private static InlineKeyboardMarkup getServicesKeyboard(String language){
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
@@ -1207,6 +1197,21 @@ public class CreditAssistanceHandler extends TelegramLongPollingBot {
         InlineKeyboardButton button = new InlineKeyboardButton();
         button.setText(getVisitSiteMessage(language));
         button.setUrl("http://finance-assistant.club");
+        row.add(button);
+        rows.add(row);
+
+        inlineKeyboardMarkup.setKeyboard(rows);
+        return inlineKeyboardMarkup;
+    }
+
+    private static InlineKeyboardMarkup getReportKeyboard(int userId, String language){
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+
+        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
+        List<InlineKeyboardButton> row = new ArrayList<>();
+        InlineKeyboardButton button = new InlineKeyboardButton();
+        button.setText(getReportCommand(language));
+        button.setUrl(BotConfig.GETPDF_URL+DB.getUserState(userId).getPdfView());
         row.add(button);
         rows.add(row);
 
